@@ -99,7 +99,7 @@ public class ActivityPrincipal extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void notificaciones(){
-        
+        //prueba
     }
 
     public Boolean existeUsuario(String UID){
