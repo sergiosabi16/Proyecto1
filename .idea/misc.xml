@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/drawable-anydpi-v24/ic_stat_name.xml" value="0.2703125" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/drawable-anydpi-v24/notificacionOff.xml" value="0.2703125" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/drawable-anydpi-v24/notificacionOn.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2703125" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.2703125" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/drawable/notificacionOff_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/drawable/notificacion_off.xml" value="0.2703125" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/layout/activity_principal.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/layout/activity_registro.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/layout/fragment_equipo.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/layout/fragment_mensajes.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/layout/fragment_perfil.xml" value="0.25" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/layout/fragment_recycler.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/layout/item_mensaje.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/layout/lista_perfil.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/menu/filtro_jugadores.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/menu/filtros.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/menu/jugador_externo.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/menu/jugador_interno.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/menu/menu.xml" value="0.20610687022900764" />
+        <entry key="..\:/Users/sergi/AndroidStudioProjects/Proyecto/app/src/main/res/mipmap-anydpi-v26/notificacionOff_round.xml" value="0.2703125" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

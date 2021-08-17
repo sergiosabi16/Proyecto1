@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/filtroJugadorLiga"
+        android:title="Por liga" />
+    <item
+        android:id="@+id/filtroJugadorPosicion"
+        android:title="Por posicion" />
+    <item
+        android:id="@+id/filtroJugadorNombre"
+        android:title="Por nombre" />
+    <item
+        android:id="@+id/filtroJugadorQuitar"
+        android:title="Quitar filtro" />
+</menu>

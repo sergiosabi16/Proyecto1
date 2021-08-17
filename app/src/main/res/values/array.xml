@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ligas">ç
+        <item>Hierro 4</item>
+        <item>Hierro 3</item>
+        <item>Hierro 2</item>
+        <item>Hierro 1</item>
+        <item>Bronce 4</item>
+        <item>Bronce 3</item>
+        <item>Bronce 2</item>
+        <item>Bronce 1</item>
+        <item>Plata 4</item>
+        <item>Plata 3</item>
+        <item>Plata 2</item>
+        <item>Plata 1</item>
+        <item>Oro 4</item>
+        <item>Oro 3</item>
+        <item>Oro 2</item>
+        <item>Oro 1</item>
+        <item>Platino 4</item>
+        <item>Platino 3</item>
+        <item>Platino 2</item>
+        <item>Platino 1</item>
+        <item>Diamante 4</item>
+        <item>Diamante 3</item>
+        <item>Diamante 2</item>
+        <item>Diamante 1</item>
+    </string-array>
+    <string-array name="posiciones">
+        <item>Top</item>
+        <item>Jungla</item>
+        <item>Mid</item>
+        <item>Bot</item>
+        <item>Apoyo</item>
+        <item>Polivalente</item>
+    </string-array>
+</resources>
