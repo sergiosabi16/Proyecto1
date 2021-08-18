@@ -32,6 +32,8 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
         View view;
         if(tipo==0) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_perfil, null, false);
+        }else if(tipo==1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_equipo,null,false);
         }else{
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mensaje, null, false);
         }
@@ -44,7 +46,10 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
 
         if(tipo==0) {
             holder.asignarDatos(lista.get(position));
-        }else{
+        }else if(tipo==1){
+            holder.asignarDatosEquipo(lista.get(position));
+        }
+        else{
             holder.asignarDatosMensaje(lista.get(position));
         }
     }
@@ -81,9 +86,12 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             }
         }
         public void asignarDatosMensaje(String [] msn){
-
-
             nombreUsuarioLista.setText(msn[0]);
+        }
+        public void asignarDatosEquipo(String [] equipo){
+            nombreUsuarioLista.setText(equipo[1]);
+            ligaUsuarioLista.setText(equipo[2]);
+            posicionUsuarioLista.setText(equipo[3]);
         }
 
         public void asignarDatos(String[] usuario) {

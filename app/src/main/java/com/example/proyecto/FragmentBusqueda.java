@@ -91,7 +91,7 @@ public class FragmentBusqueda extends Fragment {
                 adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
             }else{
                 lista = crearConsultaEquipos(0,"");
-                adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
+                adaptador = new Adaptador(1,lista,(ActivityPrincipal)getActivity());
             }
 
             recycler.setAdapter(adaptador);
@@ -212,11 +212,9 @@ public class FragmentBusqueda extends Fragment {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Task<QuerySnapshot> task=null;
         if(campo==1){ //busqueda por liga
-            task = db.collection("usuarios").whereEqualTo("liga",valor).get();
+            task = db.collection("equipos").whereEqualTo("liga",valor).get();
         }else if(campo==2){ //busqueda por posicion
-            task = db.collection("usuarios").whereEqualTo("posicion",valor).get();
-        }else if(campo==3){ //busqueda por nombre
-            task = db.collection("usuarios").whereEqualTo("nombreInvocador",valor).get();
+            task = db.collection("equipos").whereEqualTo("posicion",valor).get();
         }else{
             task = db.collection("equipos").get();
         }
@@ -224,19 +222,12 @@ public class FragmentBusqueda extends Fragment {
             if (task.isSuccessful()) {
                 bucle = false;
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Boolean userVacio=false;
-                    String[] user = new String[4];
-                    user[0]=document.get("UID").toString();
-                    user[1]=document.get("nombreInvocador").toString();
-                    user[2]=document.get("liga").toString();
-                    user[3]=document.get("posicion").toString();
-                    for (int i=0;i<user.length;i++) {
-                        if(user[i].length()==0){
-                            userVacio=true;
-                        }
-                    }
-                    if(!userVacio)
-                        resultados.add(user);
+
+                    String[] equipo = new String[4];
+                    equipo[0]=document.get("nombreEquipo").toString();
+                    equipo[1]=document.get("propietarioEquipo").toString();
+
+                    resultados.add(equipo);
                 }
             }else{
                 bucle=true;
