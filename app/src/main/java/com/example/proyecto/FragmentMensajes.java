@@ -61,8 +61,7 @@ public class FragmentMensajes extends Fragment {
 
             recycler= view.findViewById(R.id.recyclerMensajes);
             recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-            EscuchaMensajes escuchaMensajes= new EscuchaMensajes();
-            //escuchaMensajes.run();
+
             ArrayList<String[]> lista = new ArrayList<>();
             Adaptador adaptador= new Adaptador(2,lista,(ActivityPrincipal)getActivity());
             recycler.setAdapter(adaptador);
