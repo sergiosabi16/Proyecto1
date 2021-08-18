@@ -15,7 +15,6 @@ import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +32,7 @@ public class FragmentBusqueda extends Fragment {
     RecyclerView recycler;
     Button btnFiltro;
     private String[] posiciones, ligas;
+    Boolean tipo; //true jugadores, false equipos
 
     public static FragmentBusqueda newInstance(Bundle arg){
         FragmentBusqueda f = new FragmentBusqueda();
@@ -49,7 +49,7 @@ public class FragmentBusqueda extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() !=null){
-
+            tipo=getArguments().getBoolean("tipo");
         }
 
     }
@@ -75,16 +75,24 @@ public class FragmentBusqueda extends Fragment {
             btnFiltro.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    menuFiltro(btnFiltro);
+                    if(tipo) {
+                        menuFiltroJugadores(btnFiltro);
+                    }else{
+
+                    }
                 }
             });
 
             recycler= view.findViewById(R.id.recyclerView);
             recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-
-            lista= crearConsulta(0,"");
-
-            Adaptador adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
+            Adaptador adaptador;
+            if(tipo) {
+                lista = crearConsultaJugadores(0, "");
+                adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
+            }else{
+                lista = crearConsultaEquipos(0,"");
+                adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
+            }
 
             recycler.setAdapter(adaptador);
             //Toast.makeText(getActivity(), "onViewCreated", Toast.LENGTH_LONG).show();
@@ -95,12 +103,9 @@ public class FragmentBusqueda extends Fragment {
     public void onStart() {
         super.onStart();
         if (getArguments() != null) {
-
-
-
         }
     }
-    public ArrayList<String[]> crearConsulta(int campo, String valor){
+    public ArrayList<String[]> crearConsultaJugadores(int campo, String valor){
         Boolean bucle;
         ArrayList<String[]> resultados= new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -138,7 +143,7 @@ public class FragmentBusqueda extends Fragment {
         }while (bucle);
         return resultados;
     }
-    public void menuFiltro(View v){
+    public void menuFiltroJugadores(View v){
         PopupMenu popup = new PopupMenu(v.getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.filtro_jugadores, popup.getMenu());
@@ -152,7 +157,7 @@ public class FragmentBusqueda extends Fragment {
                     builder.setTitle(R.string.titulo).setItems(R.array.ligas, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            lista= crearConsulta(1,ligas[which]);
+                            lista= crearConsultaJugadores(1,ligas[which]);
                             Adaptador adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
                             recycler.setAdapter(adaptador);
                         }
@@ -164,7 +169,7 @@ public class FragmentBusqueda extends Fragment {
                     builder.setTitle(R.string.titulo).setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            lista= crearConsulta(2,posiciones[which]);
+                            lista= crearConsultaJugadores(2,posiciones[which]);
                             Adaptador adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
                             recycler.setAdapter(adaptador);
                         }
@@ -179,7 +184,7 @@ public class FragmentBusqueda extends Fragment {
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    lista= crearConsulta(3,txtDialog.getText().toString());
+                                    lista= crearConsultaJugadores(3,txtDialog.getText().toString());
                                     Adaptador adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
                                     recycler.setAdapter(adaptador);
                                 }
@@ -192,7 +197,7 @@ public class FragmentBusqueda extends Fragment {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }else if(id==R.id.filtroJugadorQuitar){
-                    lista= crearConsulta(0,"");
+                    lista= crearConsultaJugadores(0,"");
                     Adaptador adaptador = new Adaptador(0,lista,(ActivityPrincipal)getActivity());
                     recycler.setAdapter(adaptador);
                 }
@@ -201,5 +206,44 @@ public class FragmentBusqueda extends Fragment {
         });
         popup.show();
     }
+    public ArrayList<String[]> crearConsultaEquipos(int campo, String valor){
+        Boolean bucle;
+        ArrayList<String[]> resultados= new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Task<QuerySnapshot> task=null;
+        if(campo==1){ //busqueda por liga
+            task = db.collection("usuarios").whereEqualTo("liga",valor).get();
+        }else if(campo==2){ //busqueda por posicion
+            task = db.collection("usuarios").whereEqualTo("posicion",valor).get();
+        }else if(campo==3){ //busqueda por nombre
+            task = db.collection("usuarios").whereEqualTo("nombreInvocador",valor).get();
+        }else{
+            task = db.collection("equipos").get();
+        }
+        do {
+            if (task.isSuccessful()) {
+                bucle = false;
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Boolean userVacio=false;
+                    String[] user = new String[4];
+                    user[0]=document.get("UID").toString();
+                    user[1]=document.get("nombreInvocador").toString();
+                    user[2]=document.get("liga").toString();
+                    user[3]=document.get("posicion").toString();
+                    for (int i=0;i<user.length;i++) {
+                        if(user[i].length()==0){
+                            userVacio=true;
+                        }
+                    }
+                    if(!userVacio)
+                        resultados.add(user);
+                }
+            }else{
+                bucle=true;
+            }
+        }while (bucle);
+        return resultados;
+    }
+
 
 }

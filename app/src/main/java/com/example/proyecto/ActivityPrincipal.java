@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -21,10 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class ActivityPrincipal extends AppCompatActivity {
+ public class ActivityPrincipal extends AppCompatActivity {
 
     private static final String TAG = "Cosicas";
     private FirebaseAuth mAuth;
@@ -69,12 +64,13 @@ public class ActivityPrincipal extends AppCompatActivity {
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.verJugadores) {
+        if (id == R.id.buscarJugadores) {
 
             Bundle bundle = new Bundle();
 
             bundle.putString("usuarioVisualizado", usuarioLogged);
             bundle.putBoolean("usuarioNuevo", usuarioNuevo);
+            bundle.putBoolean("tipo",true);
 
             FragmentBusqueda fragment = FragmentBusqueda.newInstance(bundle);
 
@@ -102,6 +98,19 @@ public class ActivityPrincipal extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentMensajes).commit();
             notificaion=false;
+        }else if(id == R.id.buscarEquipos){
+
+            Bundle bundle = new Bundle();
+
+            bundle.putString("usuarioVisualizado", usuarioLogged);
+            bundle.putBoolean("usuarioNuevo", usuarioNuevo);
+            bundle.putBoolean("tipo",false);
+
+            FragmentBusqueda fragment = FragmentBusqueda.newInstance(bundle);
+
+            fragmentManager.beginTransaction().replace(R.id.pantalla, fragment).commit();
+
+
         }else if(id == R.id.cerrarSesion){
             Intent i = new Intent(getApplicationContext(),MainActivity.class);
             startActivity(i);

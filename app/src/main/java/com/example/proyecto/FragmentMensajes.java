@@ -48,7 +48,6 @@ public class FragmentMensajes extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_mensajes, container, false);
     }
 
@@ -71,9 +70,9 @@ public class FragmentMensajes extends Fragment {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                     for(DocumentChange documentChange: value.getDocumentChanges()){
-                        if(documentChange.getType()== DocumentChange.Type.ADDED){
+                        if(documentChange.getType()== DocumentChange.Type.ADDED && documentChange.getDocument().get("destinatario").toString().equals(((ActivityPrincipal) getActivity()).getUsuarioLogged())){
                             String msn[] = new String[4];
-                            msn[0]=documentChange.getDocument().get("destinatario").toString();
+                            msn[0]=documentChange.getDocument().get("origen").toString();
                             lista.add(msn);
                             adaptador.notifyDataSetChanged();
                             recycler.smoothScrollToPosition(lista.size());
@@ -89,11 +88,6 @@ public class FragmentMensajes extends Fragment {
     public void onStart() {
         super.onStart();
         if (getArguments() != null) {
-
-            /*if(usuarioNuevo){
-                DialogFragment dialog = new DialogBienvenida();
-                dialog.show(getFragmentManager(),"bienvenida");
-            }*/
 
         }
     }

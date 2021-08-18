@@ -10,7 +10,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -18,14 +17,13 @@ import java.util.ArrayList;
 public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptador>{
 
     ArrayList<String[]> lista;
-    int tipo;
+    int tipo; //tipo 0 jugadores, tipo 1 equipos, tipo 2 mensajes
     ActivityPrincipal main;
 
     public Adaptador(int tipo,ArrayList<String[]> lista,ActivityPrincipal main) {
         this.tipo = tipo;
         this.lista = lista;
         this.main = main;
-
     }
 
     @NonNull
@@ -64,7 +62,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
         public ViewHolderAdaptador(@NonNull View itemView) {
             super(itemView);
             if(tipo==0) {
-                nombreUsuarioLista = itemView.findViewById(R.id.nombreUsuarioList);
+                nombreUsuarioLista = itemView.findViewById(R.id.nombreUsuarioLista);
                 ligaUsuarioLista = itemView.findViewById(R.id.ligaUsuarioLista);
                 posicionUsuarioLista = itemView.findViewById(R.id.posicionUsuarioLista);
                 itemView.setOnClickListener(new View.OnClickListener() {
@@ -73,11 +71,18 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                         menuJugador(itemView);
                     }
                 });
-            }else{
-                nombreUsuarioLista = itemView.findViewById(R.id.destinatarioMsg);
+            }else if(tipo==1){
+                nombreUsuarioLista = itemView.findViewById(R.id.nombreEquipoLista);
+                ligaUsuarioLista = itemView.findViewById(R.id.ligaEquipoLista);
+                posicionUsuarioLista = itemView.findViewById(R.id.propietarioEquipoLista);
+            }
+            else{
+                nombreUsuarioLista = itemView.findViewById(R.id.textoMsg);
             }
         }
         public void asignarDatosMensaje(String [] msn){
+
+
             nombreUsuarioLista.setText(msn[0]);
         }
 

@@ -3,11 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/verJugadores"
-        android:title="Ver jugadores" />
-    <item
         android:id="@+id/miEquipo"
         android:title="Mi equipo" />
+    <item
+        android:id="@+id/buscarJugadores"
+        android:title="Buscar jugadores" />
+
+    <item
+        android:id="@+id/buscarEquipos"
+        android:title="Buscar equipos" />
     <item
         android:id="@+id/mensajes"
         android:title="Mis mensajes"
