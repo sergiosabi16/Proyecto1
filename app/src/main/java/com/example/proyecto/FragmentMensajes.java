@@ -72,7 +72,10 @@ public class FragmentMensajes extends Fragment {
                     for(DocumentChange documentChange: value.getDocumentChanges()){
                         if(documentChange.getType()== DocumentChange.Type.ADDED && documentChange.getDocument().get("destinatario").toString().equals(((ActivityPrincipal) getActivity()).getUsuarioLogged())){
                             String msn[] = new String[4];
-                            msn[0]=documentChange.getDocument().get("origen").toString();
+                            msn[0]=documentChange.getDocument().get("destinatario").toString();
+                            msn[1]=documentChange.getDocument().get("origen").toString();
+                            msn[2]=documentChange.getDocument().get("tipo").toString();
+                            msn[3]=documentChange.getDocument().get("posicion").toString();
                             lista.add(msn);
                             adaptador.notifyDataSetChanged();
                             recycler.smoothScrollToPosition(lista.size());

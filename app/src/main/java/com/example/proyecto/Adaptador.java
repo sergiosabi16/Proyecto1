@@ -1,5 +1,7 @@
 package com.example.proyecto;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -86,7 +88,8 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             }
         }
         public void asignarDatosMensaje(String [] msn){
-            nombreUsuarioLista.setText(msn[0]);
+            //Mensaje mensaje= new Mensaje(main.getApplicationContext(),msn[0],msn[1],Integer.getInteger(msn[2]),Integer.getInteger(msn[3]));
+            nombreUsuarioLista.setText(msn[1]);
         }
         public void asignarDatosEquipo(String [] equipo){
             nombreUsuarioLista.setText(equipo[1]);
@@ -115,6 +118,17 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                             bundle.putBoolean("usuarioNuevo", false);
 
                             main.verJugador(bundle);
+                        }else if(id==R.id.invitarJugador){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                            builder.setTitle(R.string.titulo).setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Mensaje msn=new Mensaje(main.getApplicationContext(),UID,main.getUsuarioLogged(),1,which);
+                                    msn.enviarMensaje();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
                         }
                     return false;
                 }
