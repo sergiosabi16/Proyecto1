@@ -63,6 +63,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
 
     public class ViewHolderAdaptador extends RecyclerView.ViewHolder {
 
+        Mensaje mensaje;
         String UID;
         TextView nombreUsuarioLista,ligaUsuarioLista,posicionUsuarioLista;
 
@@ -85,11 +86,30 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             }
             else{
                 nombreUsuarioLista = itemView.findViewById(R.id.textoMsg);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                        builder.setTitle("¿Aceptas?").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mensaje.cambiarJugador();
+                            }
+                        }).setNegativeButton("Rechazar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                });
             }
         }
         public void asignarDatosMensaje(String [] msn){
-            //Mensaje mensaje= new Mensaje(main.getApplicationContext(),msn[0],msn[1],Integer.getInteger(msn[2]),Integer.getInteger(msn[3]));
-            nombreUsuarioLista.setText(msn[1]);
+            mensaje= new Mensaje(itemView.getContext(),msn[0],msn[1],Integer.parseInt(msn[2]),Integer.parseInt(msn[3]));
+            nombreUsuarioLista.setText(mensaje.montarMensaje());
         }
         public void asignarDatosEquipo(String [] equipo){
             nombreUsuarioLista.setText(equipo[1]);

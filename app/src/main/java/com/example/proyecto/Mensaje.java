@@ -3,6 +3,7 @@ package com.example.proyecto;
 import android.content.Context;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -51,23 +52,66 @@ public class Mensaje {
     }
 
     public String montarMensaje(){
-
+        Boolean bucle=true;
         String msn="";
         if(tipo==1) {
             String nombreEquipo="";
-            Task<QuerySnapshot> task = FirebaseFirestore.getInstance().collection("equipos").whereEqualTo("propietarioEquipo", origen).get();
+            Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
             do {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        nombreEquipo=doc.get("nombreEquipo").toString();
-                    }
+                    bucle=false;
+                    DocumentSnapshot doc = task.getResult();
+                    nombreEquipo=doc.get("nombreEquipo").toString();
                 }
-            } while (!task.isSuccessful());
-            msn=context.getResources().getString(R.string.msn1part0)+nombreEquipo+context.getResources().getString(R.string.msn1part1)+posiciones[posicion]+".";
+            } while (bucle);
+            msn="El equipo '"+nombreEquipo+"' esta interesado en que juegues en la posición de "+posiciones[posicion]+".";
+        }else if(tipo==3){
+            String nombreEquipo="";
+            Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
+            do {
+                if (task.isSuccessful()) {
+                    bucle=false;
+                    DocumentSnapshot doc = task.getResult();
+                    nombreEquipo=doc.get("nombreEquipo").toString();
+                }
+            } while (bucle);
+            msn="Lo sentimos, pero el equipo '"+nombreEquipo+"' ha decidido no contar más contigo.";
         }
-
         return msn;
     }
+    public void cambiarJugador(){
+        Boolean bucle=true,seSustituyeJugador=false;
+        String jugadorEliminado="";
+        Map<String, Object> jugador = new HashMap<>();
+        if(tipo==1){
+            Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
+            do {
+                if (task.isSuccessful()) {
+                    bucle=false;
+                    if(task.getResult().get(posiciones[posicion])!=null)
+                        jugadorEliminado =task.getResult().get(posiciones[posicion]).toString();
+                    if(jugadorEliminado.length()!=0){
+                        seSustituyeJugador=true;
+                    }
+                }
+            } while (bucle);
+            jugador.put(posiciones[posicion],destinatario);
+            FirebaseFirestore.getInstance().collection("equipos").document(origen).set(jugador);
+        }
+        if(seSustituyeJugador)
+            MensajeJugadorEliminado(jugadorEliminado);
+    };
+    public void MensajeJugadorEliminado(String jugadorEliminado){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> msn = new HashMap<>();
+
+        msn.put("destinatario",jugadorEliminado);
+        msn.put("origen",origen);
+        msn.put("tipo", String.valueOf(3));
+        msn.put("visto",String.valueOf(visto));
+
+        db.collection("mensajes").document().set(msn);
+    };
 //region Getters y Setters
     public String getDestinatario() {
         return destinatario;

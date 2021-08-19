@@ -5,8 +5,4 @@
     <string name="bienvenida">Hola, este es el mensaje de bienvenida y tutorial de lolder</string>
     <string name="titulo">Bienvenido a Lolder!</string>
     <string name="aceptar">Aceptar</string>
-    <string name="msn0part0">El jugador </string>
-    <string name="msn0part1"> esta interesado en unirse a tu equipo en la posición de </string>
-    <string name="msn1part0">El equipo </string>
-    <string name="msn1part1"> esta interesado en que te unas en la posición de </string>
 </resources>
