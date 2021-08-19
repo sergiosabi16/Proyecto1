@@ -88,7 +88,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
             fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentEquipo).commit();
 
-            Toast.makeText(getApplicationContext(), "item 2", Toast.LENGTH_SHORT).show();
         }else if(id == R.id.mensajes){
 
             Bundle bundle = new Bundle();
@@ -97,7 +96,7 @@ import com.google.firebase.firestore.QuerySnapshot;
             FragmentMensajes fragmentMensajes = FragmentMensajes.newInstance(bundle);
 
             fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentMensajes).commit();
-            notificaion=false;
+            //notificaion=false;
         }else if(id == R.id.buscarEquipos){
 
             Bundle bundle = new Bundle();
