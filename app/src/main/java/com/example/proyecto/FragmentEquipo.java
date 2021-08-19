@@ -33,8 +33,8 @@ public class FragmentEquipo extends Fragment {
 
     String equipoVisualizado,propietarioEquipo,usuarioLogged;
     Boolean equipoNuevo;
-
-    TextView txtNombreEquipo,txtPropietarioEquipo,txtMediaLigas,txtTop,txtJungla,txtMid,txtBot,txtApoyo,txtSuplente;
+    String[] posiciones,ligas;
+    TextView txtNombreEquipo,txtPropietarioEquipo,txtMediaLigas,jugadorTop,jugadorJungla,jugadorMid,jugadorBot,jugadorApoyo,jugadorSuplente;
     ImageButton btnNombreEquipo;
 
     public static FragmentEquipo newInstance(Bundle arg){
@@ -78,69 +78,69 @@ public class FragmentEquipo extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if(getArguments() != null) {
 
+            ligas=getResources().getStringArray(R.array.ligas);
+            posiciones=getResources().getStringArray(R.array.posiciones);
             txtNombreEquipo= view.findViewById(R.id.nombreEquipo);
             txtPropietarioEquipo = view.findViewById(R.id.propetarioEquipo);
             txtMediaLigas = view.findViewById(R.id.mediaJugadores);
-            txtTop = view.findViewById(R.id.txtTop);
-            txtJungla = view.findViewById(R.id.txtJungla);
-            txtMid = view.findViewById(R.id.txtMid);
-            txtBot = view.findViewById(R.id.txtBot);
-            txtApoyo = view.findViewById(R.id.txtApoyo);
-            txtSuplente = view.findViewById(R.id.txtSuplente);
+            jugadorTop = view.findViewById(R.id.jugadorTop);
+            jugadorJungla = view.findViewById(R.id.jugadorJungla);
+            jugadorMid = view.findViewById(R.id.jugadorMid);
+            jugadorBot = view.findViewById(R.id.jugadorBot);
+            jugadorApoyo = view.findViewById(R.id.jugadorApoyo);
+            jugadorSuplente = view.findViewById(R.id.jugadorSuplente);
 
             btnNombreEquipo = view.findViewById(R.id.btnEditarNombreEquipo);
 
-            txtTop.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu(txtTop);
-                }
-            });
-            txtJungla.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu(txtJungla);
-                }
-            });
-            txtMid.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu(txtMid);
-                }
-            });
-            txtBot.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu(txtBot);
-                }
-            });
-            txtApoyo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu(txtApoyo);
-                }
-            });
-            txtSuplente.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu(txtSuplente);
-                }
-            });
+            cargarEquipo();
 
-            //cargarUsuario();
+            jugadorTop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu(jugadorTop);
+                }
+            });
+            jugadorJungla.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu(jugadorJungla);
+                }
+            });
+            jugadorMid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu(jugadorMid);
+                }
+            });
+            jugadorBot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu(jugadorBot);
+                }
+            });
+            jugadorApoyo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu(jugadorApoyo);
+                }
+            });
+            jugadorSuplente.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu(jugadorSuplente);
+                }
+            });
 
             if(txtNombreEquipo.getText().length()==0){
                 txtNombreEquipo.setText("Escribe nombre de equipo");
-                //ligaUsuario.setText("Elige una liga");
-                //posicionUsuario.setText("Elige una posición");
+                equipoNuevo=true;
+            }else{
+                equipoNuevo=false;
             }
 
             if(usuarioLogged==propietarioEquipo) {
                 miEquipo();
-
-                //usuarioPropio();
             }
-            //Toast.makeText(getActivity(), "onViewCreated", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -151,7 +151,7 @@ public class FragmentEquipo extends Fragment {
 
             if(equipoNuevo){
 
-                guardarEquipo();
+               // guardarEquipo();
                 DialogFragment dialog = new DialogBienvenida();
                 dialog.show(getFragmentManager(),"bienvenida");
             }
@@ -259,19 +259,31 @@ public class FragmentEquipo extends Fragment {
 
 
     public void cargarEquipo(){
-       /* Boolean aux=true;
+       Boolean bucle=true;
+       String jugadores[]=new String[6];
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference document = db.collection("usuarios").document(usuarioVisualizado);
+        DocumentReference document = db.collection("equipos").document(equipoVisualizado);
         Task<DocumentSnapshot> task=document.get();
         do {
             if(task.isSuccessful()) {
+                bucle=false;
                 DocumentSnapshot ds = task.getResult();
-                nombreUsuario.setText((CharSequence) ds.get("nombreInvocador"));
-                ligaUsuario.setText((CharSequence) ds.get("liga"));
-                posicionUsuario.setText((CharSequence) ds.get("posicion"));
-                aux=false ;
+                txtNombreEquipo.setText((CharSequence) ds.get("nombreEquipo"));
+                for(int i=0;i<posiciones.length;i++){
+                    if(ds.get(posiciones[i])!=null) {
+                        jugadores[i] = FirebaseFirestore.getInstance().collection("usuarios").document(ds.get(posiciones[i]).toString()).get().getResult().get("nombreInvocador").toString();
+                    }else{
+                        jugadores[i] = "No existe ningún jugador en esta posición";
+                    }
+                }
             }
-        }while(aux);*/
+        }while(bucle);
+        jugadorTop.setText(jugadores[0]);
+        jugadorJungla.setText(jugadores[1]);
+        jugadorMid.setText(jugadores[2]);
+        jugadorBot.setText(jugadores[3]);
+        jugadorApoyo.setText(jugadores[4]);
+        jugadorSuplente.setText(jugadores[5]);
     }
 
 }

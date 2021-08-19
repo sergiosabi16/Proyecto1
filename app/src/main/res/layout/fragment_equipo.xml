@@ -6,6 +6,57 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/jugadorTop"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTop" />
+
+    <TextView
+        android:id="@+id/jugadorJungla"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtJungla" />
+
+    <TextView
+        android:id="@+id/jugadorMid"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMid" />
+
+    <TextView
+        android:id="@+id/jugadorBot"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtBot" />
+
+    <TextView
+        android:id="@+id/jugadorApoyo"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtApoyo" />
+
+    <TextView
         android:id="@+id/txtSuplente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,6 +169,16 @@
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mediaJugadores" />
+
+    <TextView
+        android:id="@+id/jugadorSuplente"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSuplente" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
