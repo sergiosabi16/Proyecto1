@@ -49,9 +49,12 @@ public class Mensaje {
         msn.put("posicion", String.valueOf(posicion));
         msn.put("visto",String.valueOf(visto));
 
-        db.collection("mensajes").document().set(msn);
-    }
+        Task task= db.collection("mensajes").document().set(msn);
+        do{
+            //wait
+        }while (!task.isSuccessful());
 
+    }
     public String montarMensaje(){
 
         Boolean bucle=true;
@@ -109,18 +112,21 @@ public class Mensaje {
             FirebaseFirestore.getInstance().collection("equipos").document(origen).set(equipo);
         }
         if(seSustituyeJugador)
-            MensajeJugadorEliminado(jugadorEliminado);
+            MensajeJugadorEliminado(jugadorEliminado,origen);
     };
-    public void MensajeJugadorEliminado(String jugadorEliminado){
+    public static void MensajeJugadorEliminado(String jugadorEliminado,String origen){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> msn = new HashMap<>();
 
         msn.put("destinatario",jugadorEliminado);
         msn.put("origen",origen);
         msn.put("tipo", String.valueOf(3));
-        msn.put("visto",String.valueOf(visto));
+        msn.put("visto",String.valueOf(false));
 
-        db.collection("mensajes").document().set(msn);
+        Task task= db.collection("mensajes").document().set(msn);
+        do{
+            //wait
+        }while (!task.isSuccessful());
     };
 
     public void eliminarMensaje(){

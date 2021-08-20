@@ -1,5 +1,7 @@
 package com.example.proyecto;
 
+import static com.example.proyecto.Mensaje.MensajeJugadorEliminado;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -258,8 +260,8 @@ public class FragmentEquipo extends Fragment {
                     } while (bucle);
                     equipo.put(posiciones[posicion],usuarioLogged);
                     FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
-
-                        //MensajeJugadorEliminado(jugadorEliminado,usuarioLogged);
+                    if(seSustituyeJugador)
+                        MensajeJugadorEliminado(jugadorEliminado,usuarioLogged);
 
                 }else if(id==R.id.eliminarJugador){
 
