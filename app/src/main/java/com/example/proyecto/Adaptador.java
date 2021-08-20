@@ -83,6 +83,16 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                 nombreUsuarioLista = itemView.findViewById(R.id.nombreEquipoLista);
                 ligaUsuarioLista = itemView.findViewById(R.id.ligaEquipoLista);
                 posicionUsuarioLista = itemView.findViewById(R.id.propietarioEquipoLista);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("usuarioLogged", main.getUsuarioLogged());
+                        bundle.putString("equipoVisualizado", UID);
+
+                        main.verEquipo(bundle);
+                    }
+                });
             }
             else{
                 nombreUsuarioLista = itemView.findViewById(R.id.textoMsg);
@@ -114,6 +124,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
         public void asignarDatosEquipo(String [] equipo){
             nombreUsuarioLista.setText(equipo[0]);
             ligaUsuarioLista.setText(equipo[1]);
+            UID=equipo[1];
         }
 
         public void asignarDatos(String[] usuario) {

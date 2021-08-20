@@ -182,4 +182,8 @@ import com.google.firebase.firestore.QuerySnapshot;
         FragmentPerfil fragmentEquipo = FragmentPerfil.newInstance(bundle);
         fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentEquipo).commit();
     }
+    public void verEquipo(Bundle bundle){
+        FragmentEquipo fragmentEquipo = FragmentEquipo.newInstance(bundle);
+        fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentEquipo).commit();
+    }
 }

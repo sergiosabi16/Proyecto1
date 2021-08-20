@@ -5,6 +5,9 @@
         android:id="@+id/verJugador"
         android:title="Ver jugador" />
     <item
+        android:id="@+id/asignarme"
+        android:title="Ocupar esta posición" />
+    <item
         android:id="@+id/eliminarJugador"
         android:title="Eliminar jugador" />
 </menu>

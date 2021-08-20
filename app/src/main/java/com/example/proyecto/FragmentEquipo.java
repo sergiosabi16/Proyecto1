@@ -33,7 +33,7 @@ public class FragmentEquipo extends Fragment {
 
     String equipoVisualizado,propietarioEquipo,usuarioLogged;
     Boolean equipoNuevo;
-    String[] posiciones,ligas;
+    String[] posiciones,ligas,UIDjugadores;
     TextView txtNombreEquipo,txtPropietarioEquipo,txtMediaLigas,jugadorTop,jugadorJungla,jugadorMid,jugadorBot,jugadorApoyo,jugadorSuplente;
     ImageButton btnNombreEquipo;
 
@@ -222,7 +222,6 @@ public class FragmentEquipo extends Fragment {
 
 
     }
-
     public void menu(View v) {
         PopupMenu popup = new PopupMenu(getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();
@@ -238,10 +237,50 @@ public class FragmentEquipo extends Fragment {
 
                 if(id==R.id.verJugador){
 
+                }else if(id==R.id.asignarme){
+                    int posicion=getPosicion(v);
+                    Boolean bucle=true,seSustituyeJugador=false;
+                    String jugadorEliminado="";
+                    Map<String, Object> equipo = new HashMap<>();
+                    Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).get();
+                    do {
+                        if (task.isSuccessful()) {
+                            bucle=false;
+                            if(task.getResult().getData()!=null);
+                            equipo=task.getResult().getData();
+                            if(equipo.get(posiciones[posicion])!=null){
+                                jugadorEliminado =task.getResult().get(posiciones[posicion]).toString();
+                            }
+                            if(jugadorEliminado.length()!=0){
+                                seSustituyeJugador=true;
+                            }
+                        }
+                    } while (bucle);
+                    equipo.put(posiciones[posicion],usuarioLogged);
+                    FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
+
+                        //MensajeJugadorEliminado(jugadorEliminado,usuarioLogged);
+
                 }else if(id==R.id.eliminarJugador){
 
                 }
                 return false;
+            }
+
+            private int getPosicion(View v) {
+                if(v==jugadorTop){
+                    return 0;
+                }else if(v==jugadorJungla){
+                    return 1;
+                }else if(v==jugadorMid){
+                    return 2;
+                }else if(v==jugadorBot){
+                    return 3;
+                }else if(v==jugadorApoyo){
+                    return 4;
+                }else{
+                    return 5;
+                }
             }
         });
         popup.show();
@@ -265,9 +304,6 @@ public class FragmentEquipo extends Fragment {
         }while (bucle);
         return false;
     }
-
-
-
     public void cargarEquipo(){
        Boolean bucle=true;
        String jugadores[]=new String[6];
@@ -278,22 +314,30 @@ public class FragmentEquipo extends Fragment {
             if(task.isSuccessful()) {
                 bucle=false;
                 DocumentSnapshot ds = task.getResult();
-                txtNombreEquipo.setText(ds.get("nombreEquipo").toString());
-                for(int i=0;i<posiciones.length;i++){
-                    if(ds.get(posiciones[i])!=null) {
-                        Boolean aux=true;
-                        Task<DocumentSnapshot> jugador = FirebaseFirestore.getInstance().collection("usuarios")
-                                .document(ds.get(posiciones[i]).toString()).get();
-                        do{
-                            if(jugador.isSuccessful()){
-                                aux=false;
-                                jugadores[i]=jugador.getResult().get("nombreInvocador").toString();
-                            }
-                        }while (aux);
+                if(ds.getData()!=null) {
+                    txtNombreEquipo.setText(ds.get("nombreEquipo").toString());
+                    for (int i = 0; i < posiciones.length; i++) {
+                        if (ds.get(posiciones[i]) != null) {
+                            Boolean aux = true;
+                            Task<DocumentSnapshot> jugador = FirebaseFirestore.getInstance().collection("usuarios")
+                                    .document(ds.get(posiciones[i]).toString()).get();
+                            do {
+                                if (jugador.isSuccessful()) {
+                                    aux = false;
+                                    jugadores[i] = jugador.getResult().get("nombreInvocador").toString();
+                                }
+                            } while (aux);
 
-                    }else{
-                        jugadores[i] = "No existe ningún jugador en esta posición";
+                        } else {
+                            jugadores[i] = "No existe ningún jugador en esta posición";
+                        }
                     }
+                    UIDjugadores=jugadores;
+                }else{
+                    for(int i=0;i<jugadores.length;i++){
+                        jugadores[i] = "No existe ningún jugador en esta posición";
+                    };
+                    UIDjugadores=jugadores;
                 }
             }
         }while(bucle);

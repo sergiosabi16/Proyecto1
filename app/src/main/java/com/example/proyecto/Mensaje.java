@@ -122,7 +122,20 @@ public class Mensaje {
 
         db.collection("mensajes").document().set(msn);
     };
+
+    public void eliminarMensaje(){
+
+    };
 //region Getters y Setters
+
+    public Boolean getVisto() {
+        return visto;
+    }
+
+    public void setVisto(Boolean visto) {
+        this.visto = visto;
+    }
+
     public String getDestinatario() {
         return destinatario;
     }
