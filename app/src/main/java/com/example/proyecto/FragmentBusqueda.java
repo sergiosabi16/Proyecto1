@@ -207,7 +207,7 @@ public class FragmentBusqueda extends Fragment {
         popup.show();
     }
     public ArrayList<String[]> crearConsultaEquipos(int campo, String valor){
-        Boolean bucle;
+        Boolean bucle=true;
         ArrayList<String[]> resultados= new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Task<QuerySnapshot> task=null;
@@ -222,15 +222,13 @@ public class FragmentBusqueda extends Fragment {
             if (task.isSuccessful()) {
                 bucle = false;
                 for (QueryDocumentSnapshot document : task.getResult()) {
-
-                    String[] equipo = new String[4];
-                    equipo[0]=document.get("nombreEquipo").toString();
-                    equipo[1]=document.get("propietarioEquipo").toString();
-
-                    resultados.add(equipo);
+                    if(document.get("nombreEquipo")!=null&&document.get("propietarioEquipo")!=null) {
+                        String[] equipo = new String[2];
+                        equipo[0] = document.get("nombreEquipo").toString();
+                        equipo[1] = document.get("propietarioEquipo").toString();
+                        resultados.add(equipo);
+                    }
                 }
-            }else{
-                bucle=true;
             }
         }while (bucle);
         return resultados;

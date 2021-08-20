@@ -1,6 +1,7 @@
 package com.example.proyecto;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -52,51 +53,60 @@ public class Mensaje {
     }
 
     public String montarMensaje(){
+
         Boolean bucle=true;
         String msn="";
-        if(tipo==1) {
-            String nombreEquipo="";
-            Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
-            do {
-                if (task.isSuccessful()) {
-                    bucle=false;
-                    DocumentSnapshot doc = task.getResult();
-                    nombreEquipo=doc.get("nombreEquipo").toString();
-                }
-            } while (bucle);
-            msn="El equipo '"+nombreEquipo+"' esta interesado en que juegues en la posición de "+posiciones[posicion]+".";
-        }else if(tipo==3){
-            String nombreEquipo="";
-            Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
-            do {
-                if (task.isSuccessful()) {
-                    bucle=false;
-                    DocumentSnapshot doc = task.getResult();
-                    nombreEquipo=doc.get("nombreEquipo").toString();
-                }
-            } while (bucle);
-            msn="Lo sentimos, pero el equipo '"+nombreEquipo+"' ha decidido no contar más contigo.";
+        try{
+            if(tipo==1) {
+                String nombreEquipo="";
+                Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
+                do {
+                    if (task.isSuccessful()) {
+                        bucle=false;
+                        DocumentSnapshot doc = task.getResult();
+                        nombreEquipo=doc.get("nombreEquipo").toString();
+                    }
+                } while (bucle);
+                msn="El equipo '"+nombreEquipo+"' esta interesado en que juegues en la posición de "+posiciones[posicion]+".";
+
+            }else if(tipo==3){
+                String nombreEquipo="";
+                Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
+                do {
+                    if (task.isSuccessful()) {
+                        bucle=false;
+                        DocumentSnapshot doc = task.getResult();
+                        nombreEquipo=doc.get("nombreEquipo").toString();
+                    }
+                } while (bucle);
+                msn="Lo sentimos, pero el equipo '"+nombreEquipo+"' ha decidido no contar más contigo.";
+            }
+        }catch (Exception e){
+            msn="ERROR FATAL AL LEER EL MENSAJE";
         }
         return msn;
     }
     public void cambiarJugador(){
         Boolean bucle=true,seSustituyeJugador=false;
         String jugadorEliminado="";
-        Map<String, Object> jugador = new HashMap<>();
+        Map<String, Object> equipo = new HashMap<>();
         if(tipo==1){
             Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
             do {
                 if (task.isSuccessful()) {
                     bucle=false;
-                    if(task.getResult().get(posiciones[posicion])!=null)
+                    if(task.getResult().getData()!=null);
+                        equipo=task.getResult().getData();
+                    if(equipo.get(posiciones[posicion])!=null){
                         jugadorEliminado =task.getResult().get(posiciones[posicion]).toString();
+                    }
                     if(jugadorEliminado.length()!=0){
                         seSustituyeJugador=true;
                     }
                 }
             } while (bucle);
-            jugador.put(posiciones[posicion],destinatario);
-            FirebaseFirestore.getInstance().collection("equipos").document(origen).set(jugador);
+            equipo.put(posiciones[posicion],destinatario);
+            FirebaseFirestore.getInstance().collection("equipos").document(origen).set(equipo);
         }
         if(seSustituyeJugador)
             MensajeJugadorEliminado(jugadorEliminado);

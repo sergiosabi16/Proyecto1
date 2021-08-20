@@ -159,8 +159,19 @@ public class FragmentEquipo extends Fragment {
         }
     }
     public void guardarEquipo(){
+        Boolean bucle=true;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> equipo = new HashMap<>();
+        Map<String, Object> equipo=new HashMap<>();
+        Task<DocumentSnapshot> task = db.collection("equipos").document(usuarioLogged).get();
+        do {
+            if (task.isSuccessful()) {
+                bucle=false;
+                if(task.getResult().getData()!=null)
+                    equipo = task.getResult().getData();
+
+            }
+        }while(bucle);
+
         equipo.put("nombreEquipo",txtNombreEquipo.getText().toString());
         equipo.put("propietarioEquipo",usuarioLogged);
 
@@ -193,7 +204,6 @@ public class FragmentEquipo extends Fragment {
                                     AlertDialog dialog1 = builder.create();
                                     dialog1.show();
                                 }
-
                             }
                         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
@@ -268,10 +278,19 @@ public class FragmentEquipo extends Fragment {
             if(task.isSuccessful()) {
                 bucle=false;
                 DocumentSnapshot ds = task.getResult();
-                txtNombreEquipo.setText((CharSequence) ds.get("nombreEquipo"));
+                txtNombreEquipo.setText(ds.get("nombreEquipo").toString());
                 for(int i=0;i<posiciones.length;i++){
                     if(ds.get(posiciones[i])!=null) {
-                        jugadores[i] = FirebaseFirestore.getInstance().collection("usuarios").document(ds.get(posiciones[i]).toString()).get().getResult().get("nombreInvocador").toString();
+                        Boolean aux=true;
+                        Task<DocumentSnapshot> jugador = FirebaseFirestore.getInstance().collection("usuarios")
+                                .document(ds.get(posiciones[i]).toString()).get();
+                        do{
+                            if(jugador.isSuccessful()){
+                                aux=false;
+                                jugadores[i]=jugador.getResult().get("nombreInvocador").toString();
+                            }
+                        }while (aux);
+
                     }else{
                         jugadores[i] = "No existe ningún jugador en esta posición";
                     }

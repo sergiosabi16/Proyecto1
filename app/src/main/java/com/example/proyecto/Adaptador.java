@@ -112,9 +112,8 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             nombreUsuarioLista.setText(mensaje.montarMensaje());
         }
         public void asignarDatosEquipo(String [] equipo){
-            nombreUsuarioLista.setText(equipo[1]);
-            ligaUsuarioLista.setText(equipo[2]);
-            posicionUsuarioLista.setText(equipo[3]);
+            nombreUsuarioLista.setText(equipo[0]);
+            ligaUsuarioLista.setText(equipo[1]);
         }
 
         public void asignarDatos(String[] usuario) {
