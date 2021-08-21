@@ -1,6 +1,8 @@
 package com.example.proyecto;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 
 import com.google.android.gms.tasks.Task;
@@ -14,7 +16,6 @@ import java.util.Map;
 public class Mensaje {
     String destinatario, origen;
     int tipo,posicion; // tipo 0 unirse a equipo, tipo 1 invitar a equipo, tipo 2 respuesta, tipo 3 eliminado de equipo, tipo 4 se fue del equipo
-    Boolean visto;
     String[] posiciones;
     Context context;
 
@@ -25,7 +26,6 @@ public class Mensaje {
         this.origen = origen;
         this.tipo = tipo;
         this.posicion = posicion;
-        visto=false;
     }
     public void enviarMensaje(String destinatario,String origen,int tipo,int posicion){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -35,24 +35,24 @@ public class Mensaje {
         msn.put("origen",origen);
         msn.put("tipo", String.valueOf(tipo));
         msn.put("posicion", String.valueOf(posicion));
-        msn.put("visto",String.valueOf(visto));
+
 
         db.collection("mensajes").document().set(msn);
     }
     public void enviarMensaje(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> msn = new HashMap<>();
 
-        msn.put("destinatario",destinatario);
-        msn.put("origen",origen);
-        msn.put("tipo", String.valueOf(tipo));
-        msn.put("posicion", String.valueOf(posicion));
-        msn.put("visto",String.valueOf(visto));
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            Map<String, Object> msn = new HashMap<>();
 
-        Task task= db.collection("mensajes").document().set(msn);
-        do{
-            //wait
-        }while (!task.isSuccessful());
+            msn.put("destinatario", destinatario);
+            msn.put("origen", origen);
+            msn.put("tipo", String.valueOf(tipo));
+            msn.put("posicion", String.valueOf(posicion));
+
+            Task task = db.collection("mensajes").document().set(msn);
+            do {
+                //wait
+            } while (!task.isSuccessful());
 
     }
     public String montarMensaje(){
@@ -122,26 +122,35 @@ public class Mensaje {
         msn.put("origen",origen);
         msn.put("tipo", String.valueOf(3));
         msn.put("posicion",String.valueOf(0));
-        msn.put("visto",String.valueOf(false));
 
         Task task= db.collection("mensajes").document().set(msn);
         do{
             //wait
         }while (!task.isSuccessful());
     };
-
     public void eliminarMensaje(){
 
+
+    };
+    public Boolean comprobarMensajeEnviado(){
+        Boolean bucle=true;
+        Task<QuerySnapshot> task = FirebaseFirestore.getInstance().collection("mensajes").whereEqualTo("destinatario",destinatario).whereEqualTo("origen",origen)
+                .whereEqualTo("tipo",String.valueOf(tipo)).get();
+        do{
+            if(task.isSuccessful()){
+                bucle=false;
+                for(DocumentSnapshot doc : task.getResult()){
+                    if(doc.exists()){
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }while(bucle);
+
+        return true;
     };
 //region Getters y Setters
-
-    public Boolean getVisto() {
-        return visto;
-    }
-
-    public void setVisto(Boolean visto) {
-        this.visto = visto;
-    }
 
     public String getDestinatario() {
         return destinatario;

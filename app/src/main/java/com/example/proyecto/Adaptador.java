@@ -158,7 +158,19 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Mensaje msn=new Mensaje(main.getApplicationContext(),UID,main.getUsuarioLogged(),1,which);
-                                    msn.enviarMensaje();
+                                    if(msn.comprobarMensajeEnviado()){
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                                        builder.setTitle("Ya has invitado a este jugador").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                mensaje.cambiarJugador();
+                                            }
+                                        });
+                                        AlertDialog dialog1 = builder.create();
+                                        dialog1.show();
+                                    }else{
+                                        msn.enviarMensaje();
+                                    }
                                 }
                             });
                             AlertDialog dialog = builder.create();
