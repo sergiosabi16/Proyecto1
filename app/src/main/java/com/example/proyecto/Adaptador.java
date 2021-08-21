@@ -104,11 +104,12 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mensaje.cambiarJugador();
+                                mensaje.eliminarMensaje();
                             }
                         }).setNegativeButton("Rechazar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                mensaje.eliminarMensaje();
                             }
                         });
                         AlertDialog dialog = builder.create();

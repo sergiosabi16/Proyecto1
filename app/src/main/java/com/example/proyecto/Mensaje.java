@@ -129,7 +129,20 @@ public class Mensaje {
         }while (!task.isSuccessful());
     };
     public void eliminarMensaje(){
+        Boolean bucle=true;
+        Task<QuerySnapshot> task = FirebaseFirestore.getInstance().collection("mensajes").whereEqualTo("destinatario",destinatario).whereEqualTo("origen",origen)
+                .whereEqualTo("tipo",String.valueOf(tipo)).get();
+        do{
+            if(task.isSuccessful()){
+                bucle=false;
+                for(DocumentSnapshot doc : task.getResult()){
+                    if(doc.exists()){
+                       FirebaseFirestore.getInstance().collection("mensajes").document(doc.getId()).delete();
+                    }
+                }
 
+            }
+        }while(bucle);
 
     };
     public Boolean comprobarMensajeEnviado(){
