@@ -138,6 +138,9 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             MenuInflater inflater = popup.getMenuInflater();
                 inflater.inflate(R.menu.jugador_externo, popup.getMenu());
+            MenuItem item= popup.getMenu().findItem(R.id.invitarJugador);
+            if(!main.getPropietarioEquipo())
+                item.setVisible(false);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
@@ -149,6 +152,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
 
                             main.verJugador(bundle);
                         }else if(id==R.id.invitarJugador){
+
                             AlertDialog.Builder builder = new AlertDialog.Builder(main);
                             builder.setTitle(R.string.titulo).setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
                                 @Override

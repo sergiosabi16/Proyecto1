@@ -121,6 +121,7 @@ public class Mensaje {
         msn.put("destinatario",jugadorEliminado);
         msn.put("origen",origen);
         msn.put("tipo", String.valueOf(3));
+        msn.put("posicion",String.valueOf(0));
         msn.put("visto",String.valueOf(false));
 
         Task task= db.collection("mensajes").document().set(msn);

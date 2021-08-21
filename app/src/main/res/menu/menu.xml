@@ -6,6 +6,9 @@
         android:id="@+id/miEquipo"
         android:title="Mi equipo" />
     <item
+        android:id="@+id/miPerfil"
+        android:title="Mi perfil" />
+    <item
         android:id="@+id/buscarJugadores"
         android:title="Buscar jugadores" />
 

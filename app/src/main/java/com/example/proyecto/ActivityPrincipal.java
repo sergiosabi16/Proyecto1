@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -21,10 +22,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
  public class ActivityPrincipal extends AppCompatActivity {
 
-    private static final String TAG = "Cosicas";
     private FirebaseAuth mAuth;
     private String usuarioLogged;
-    private Boolean usuarioNuevo,notificaion=false;
+    private Boolean usuarioNuevo,notificaion=false,propietarioEquipo;
     private MenuItem iconoNotificacion;
     FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -57,6 +57,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 
         fragmentManager.beginTransaction().replace(R.id.pantalla,fragment).commit();
 
+        Task<DocumentSnapshot> task=FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).get();
+        Boolean bucle=true;
+        do{
+            if(task.isSuccessful()){
+                bucle=false;
+                if(task.getResult().exists()){
+                    propietarioEquipo=true;
+                }else{
+                    propietarioEquipo=false;
+                }
+
+            }
+        }while(bucle);
+
     }
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu,menu);
@@ -70,19 +84,31 @@ import com.google.firebase.firestore.QuerySnapshot;
 
             bundle.putString("usuarioVisualizado", usuarioLogged);
             bundle.putBoolean("usuarioNuevo", usuarioNuevo);
-            bundle.putBoolean("tipo",true);
+            bundle.putBoolean("tipo", true);
 
             FragmentBusqueda fragment = FragmentBusqueda.newInstance(bundle);
 
             fragmentManager.beginTransaction().replace(R.id.pantalla, fragment).commit();
 
-        } else if (id == R.id.miEquipo) {
+        }else if(id == R.id.miPerfil){
+
+            Bundle bundle = new Bundle();
+
+            bundle.putString("usuarioVisualizado", usuarioLogged);
+            bundle.putString("usuarioLogged",usuarioLogged);
+            bundle.putBoolean("usuarioNuevo",usuarioNuevo);
+
+            FragmentPerfil fragment = FragmentPerfil.newInstance(bundle);
+
+            fragmentManager.beginTransaction().replace(R.id.pantalla,fragment).commit();
+
+        }else if (id == R.id.miEquipo) {
 
             Bundle bundle = new Bundle();
             bundle.putString("usuarioLogged", usuarioLogged);
             bundle.putString("equipoVisualizado", usuarioLogged);
             bundle.putString("propietarioEquipo", usuarioLogged);
-            bundle.putBoolean("equipoNuevo", true);
+            bundle.putBoolean("equipoNuevo", !propietarioEquipo);
 
             FragmentEquipo fragmentEquipo = FragmentEquipo.newInstance(bundle);
 
@@ -186,4 +212,8 @@ import com.google.firebase.firestore.QuerySnapshot;
         FragmentEquipo fragmentEquipo = FragmentEquipo.newInstance(bundle);
         fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentEquipo).commit();
     }
-}
+
+     public Boolean getPropietarioEquipo() {
+         return propietarioEquipo;
+     }
+ }
