@@ -2,9 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/solicitarUnirme"
+        android:title="Solicitar ocupar esta posición"
+        />
+    <item
         android:id="@+id/verJugador"
         android:title="Ver jugador" />
     <item
         android:id="@+id/invitarJugador"
         android:title="Invitar a mi equipo" />
+
 </menu>

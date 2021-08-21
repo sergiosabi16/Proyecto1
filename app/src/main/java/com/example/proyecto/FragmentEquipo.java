@@ -38,6 +38,7 @@ public class FragmentEquipo extends Fragment {
     String[] posiciones,ligas,UIDjugadores;
     TextView txtNombreEquipo,txtPropietarioEquipo,txtMediaLigas,jugadorTop,jugadorJungla,jugadorMid,jugadorBot,jugadorApoyo,jugadorSuplente;
     ImageButton btnNombreEquipo;
+    ActivityPrincipal main;
 
     public static FragmentEquipo newInstance(Bundle arg){
         FragmentEquipo f = new FragmentEquipo();
@@ -80,6 +81,7 @@ public class FragmentEquipo extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if(getArguments() != null) {
 
+            main = (ActivityPrincipal) getActivity();
             ligas=getResources().getStringArray(R.array.ligas);
             posiciones=getResources().getStringArray(R.array.posiciones);
             txtNombreEquipo= view.findViewById(R.id.nombreEquipo);
@@ -99,37 +101,37 @@ public class FragmentEquipo extends Fragment {
             jugadorTop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    menu(jugadorTop);
+                    menu(jugadorTop,0);
                 }
             });
             jugadorJungla.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    menu(jugadorJungla);
+                    menu(jugadorJungla,1);
                 }
             });
             jugadorMid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    menu(jugadorMid);
+                    menu(jugadorMid,2);
                 }
             });
             jugadorBot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    menu(jugadorBot);
+                    menu(jugadorBot,3);
                 }
             });
             jugadorApoyo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    menu(jugadorApoyo);
+                    menu(jugadorApoyo,4);
                 }
             });
             jugadorSuplente.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    menu(jugadorSuplente);
+                    menu(jugadorSuplente,5);
                 }
             });
 
@@ -220,11 +222,11 @@ public class FragmentEquipo extends Fragment {
         });
 
     }
-    private void equipoExterno(){
+    /*private void equipoExterno(){
 
 
-    }
-    public void menu(View v) {
+    }*/
+    public void menu(View v,int posicion) {
         PopupMenu popup = new PopupMenu(getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();
         if(usuarioLogged==propietarioEquipo){
@@ -237,7 +239,18 @@ public class FragmentEquipo extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id= item.getItemId();
 
-                if(id==R.id.verJugador){
+                if(id==R.id.solicitarUnirme) {
+                    Mensaje msn = new Mensaje(getContext(),propietarioEquipo,usuarioLogged,0,posicion);
+                    msn.enviarMensaje();
+
+                }else if(id==R.id.verJugador){
+                    Bundle bundle=new Bundle();
+
+                    bundle.putString("usuarioVisualizado",UIDjugadores[posicion]);
+                    bundle.putString("usuarioLogged",usuarioLogged);
+                    bundle.putBoolean("usuarioNuevo",false);
+
+                    main.verJugador(bundle);
 
                 }else if(id==R.id.asignarme){
                     int posicion=getPosicion(v);
@@ -260,11 +273,30 @@ public class FragmentEquipo extends Fragment {
                     } while (bucle);
                     equipo.put(posiciones[posicion],usuarioLogged);
                     FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
-                    if(seSustituyeJugador)
-                        MensajeJugadorEliminado(jugadorEliminado,usuarioLogged);
-
+                    if(seSustituyeJugador) {
+                        MensajeJugadorEliminado(jugadorEliminado, usuarioLogged);
+                    }
+                    cargarEquipo();
                 }else if(id==R.id.eliminarJugador){
-
+                    int posicion=getPosicion(v);
+                    Boolean bucle=true;
+                    String jugadorEliminado="";
+                    Map<String, Object> equipo = new HashMap<>();
+                    Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).get();
+                    do {
+                        if (task.isSuccessful()) {
+                            bucle=false;
+                            if(task.getResult().getData()!=null);
+                            equipo=task.getResult().getData();
+                            if(equipo.get(posiciones[posicion])!=null){
+                                jugadorEliminado =task.getResult().get(posiciones[posicion]).toString();
+                                equipo.remove(posiciones[posicion]);
+                            }
+                        }
+                    } while (bucle);
+                    FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
+                    MensajeJugadorEliminado(jugadorEliminado,usuarioLogged);
+                    cargarEquipo();
                 }
                 return false;
             }

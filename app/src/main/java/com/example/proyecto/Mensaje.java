@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class Mensaje {
     String destinatario, origen;
-    int tipo,posicion; // tipo 0 unirse a equipo, tipo 1 invitar a equipo, tipo 2 respuesta, tipo 3 eliminado de equipo, tipo 4 se fue del equipo
+    int tipo,posicion; // tipo 0 unirse a equipo, tipo 1 invitar a equipo, tipo 2 se fue del equipo, tipo 3 eliminado de equipo,
     String[] posiciones;
     Context context;
 
@@ -111,8 +111,9 @@ public class Mensaje {
             equipo.put(posiciones[posicion],destinatario);
             FirebaseFirestore.getInstance().collection("equipos").document(origen).set(equipo);
         }
-        if(seSustituyeJugador)
-            MensajeJugadorEliminado(jugadorEliminado,origen);
+        if(seSustituyeJugador) {
+            MensajeJugadorEliminado(jugadorEliminado, origen);
+        }
     };
     public static void MensajeJugadorEliminado(String jugadorEliminado,String origen){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -140,7 +141,6 @@ public class Mensaje {
                        FirebaseFirestore.getInstance().collection("mensajes").document(doc.getId()).delete();
                     }
                 }
-
             }
         }while(bucle);
 
