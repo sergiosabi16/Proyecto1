@@ -37,11 +37,12 @@ import java.util.Map;
 public class FragmentPerfil extends Fragment {
 
     private String usuarioVisualizado,usuarioLogged;
-    private TextView nombreUsuario, ligaUsuario, posicionUsuario;
+    private TextView nombreUsuario, ligaUsuario, posicionUsuario,descripcion;
     private ImageButton btnNombre, btnLiga, btnPosicion;
     private Button btnGuardarCambios;
     private Boolean usuarioNuevo;
     private String[] posiciones, ligas;
+    private EditText txtDescripcion;
 
 
 
@@ -89,7 +90,9 @@ public class FragmentPerfil extends Fragment {
             nombreUsuario = view.findViewById(R.id.lblNombreInvocador);
             ligaUsuario = view.findViewById(R.id.lblLiga);
             posicionUsuario = view.findViewById(R.id.lblPosicion);
+            descripcion = view.findViewById(R.id.lblDescripcion);
 
+            txtDescripcion = view.findViewById(R.id.txtDescripcion);
             btnNombre = view.findViewById(R.id.btnEditarNombre);
             btnLiga = view.findViewById(R.id.btnEditarLiga);
             btnPosicion = view.findViewById(R.id.btnEditarPosicion);
@@ -133,14 +136,36 @@ public class FragmentPerfil extends Fragment {
                 nombreUsuario.setText((CharSequence) ds.get("nombreInvocador"));
                 ligaUsuario.setText((CharSequence) ds.get("liga"));
                 posicionUsuario.setText((CharSequence) ds.get("posicion"));
+                descripcion.setText((CharSequence) ds.get("descripcion"));
+                txtDescripcion.setText((CharSequence) ds.get("descripcion"));
                 aux=false ;
             }
         }while(aux);
     }
     public void usuarioPropio(){
+
+        descripcion.setVisibility(View.GONE);
+        txtDescripcion.setVisibility(View.VISIBLE);
         btnNombre.setVisibility(View.VISIBLE);
         btnLiga.setVisibility(View.VISIBLE);
         btnPosicion.setVisibility(View.VISIBLE);
+
+        txtDescripcion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                guardarUsuario(usuarioLogged,nombreUsuario.getText().toString(),ligaUsuario.getText().toString(),posicionUsuario.getText().toString());
+            }
+        });
 
         btnNombre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,6 +247,7 @@ public class FragmentPerfil extends Fragment {
         user.put("nombreInvocador",nombre);
         user.put("liga",liga);
         user.put("posicion",posicion);
+        user.put("descripcion",txtDescripcion.getText().toString());
 
         db.collection("usuarios").document(usuarioLogged).set(user);
     }

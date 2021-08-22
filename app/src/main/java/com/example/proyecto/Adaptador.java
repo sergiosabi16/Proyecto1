@@ -143,6 +143,8 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             MenuInflater inflater = popup.getMenuInflater();
                 inflater.inflate(R.menu.jugador_externo, popup.getMenu());
             MenuItem item= popup.getMenu().findItem(R.id.invitarJugador);
+            MenuItem item1= popup.getMenu().findItem(R.id.solicitarUnirme);
+            item1.setVisible(false);
             if(!main.getPropietarioEquipo())
                 item.setVisible(false);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -167,7 +169,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                                         builder.setTitle("Ya has invitado a este jugador").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                mensaje.cambiarJugador();
+
                                             }
                                         });
                                         AlertDialog dialog1 = builder.create();

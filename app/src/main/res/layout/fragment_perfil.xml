@@ -71,4 +71,26 @@
         app:layout_constraintStart_toEndOf="@+id/lblPosicion"
         app:layout_constraintTop_toTopOf="@+id/lblPosicion" />
 
+    <TextView
+        android:id="@+id/lblDescripcion"
+        android:layout_width="339dp"
+        android:layout_height="159dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblLiga" />
+
+    <EditText
+        android:id="@+id/txtDescripcion"
+        android:layout_width="339dp"
+        android:layout_height="159dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblLiga" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

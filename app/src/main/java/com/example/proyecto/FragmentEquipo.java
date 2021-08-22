@@ -239,9 +239,27 @@ public class FragmentEquipo extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id= item.getItemId();
 
-                if(id==R.id.solicitarUnirme) {
-                    Mensaje msn = new Mensaje(getContext(),propietarioEquipo,usuarioLogged,0,posicion);
-                    msn.enviarMensaje();
+                if(id==R.id.solicitarUnirme){
+                    Boolean jugadorRepetido=false;
+                    for(int i=0;i<UIDjugadores.length;i++){
+                        if(usuarioLogged==UIDjugadores[i]){
+                            jugadorRepetido=true;
+                        }
+                    }
+                    if(jugadorRepetido){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                        builder.setTitle("Ya tienes una posición asignada en este equipo").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dialog1 = builder.create();
+                        dialog1.show();
+                    }else {
+                        Mensaje msn = new Mensaje(getContext(), propietarioEquipo, usuarioLogged, 0, posicion);
+                        msn.enviarMensaje();
+                    }
 
                 }else if(id==R.id.verJugador){
                     Bundle bundle=new Bundle();

@@ -59,8 +59,19 @@ public class Mensaje {
 
         Boolean bucle=true;
         String msn="";
-        try{
-            if(tipo==1) {
+        try {
+            if(tipo==0){
+                String nombreJugador="";
+                Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("usuarios").document(origen).get();
+                do {
+                    if (task.isSuccessful()) {
+                        bucle=false;
+                        DocumentSnapshot doc = task.getResult();
+                        nombreJugador=doc.get("nombreInvocador").toString();
+                    }
+                } while (bucle);
+                msn="El jugador '"+nombreJugador+"' esta interesado en unirse a tu equipo como "+posiciones[posicion]+".";
+            }else if(tipo==1) {
                 String nombreEquipo="";
                 Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
                 do {
@@ -93,7 +104,24 @@ public class Mensaje {
         Boolean bucle=true,seSustituyeJugador=false;
         String jugadorEliminado="";
         Map<String, Object> equipo = new HashMap<>();
-        if(tipo==1){
+        if(tipo==0){
+            Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(destinatario).get();
+            do {
+                if (task.isSuccessful()) {
+                    bucle=false;
+                    if(task.getResult().getData()!=null);
+                    equipo=task.getResult().getData();
+                    if(equipo.get(posiciones[posicion])!=null){
+                        jugadorEliminado =task.getResult().get(posiciones[posicion]).toString();
+                    }
+                    if(jugadorEliminado.length()!=0){
+                        seSustituyeJugador=true;
+                    }
+                }
+            } while (bucle);
+            equipo.put(posiciones[posicion],origen);
+            FirebaseFirestore.getInstance().collection("equipos").document(destinatario).set(equipo);
+        }else if(tipo==1){
             Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(origen).get();
             do {
                 if (task.isSuccessful()) {
