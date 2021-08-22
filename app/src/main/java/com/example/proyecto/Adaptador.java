@@ -88,7 +88,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
                         bundle.putString("usuarioLogged", main.getUsuarioLogged());
-                        bundle.putString("equipoVisualizado", UID);
+                        bundle.putString("propietarioEquipo", UID);
 
                         main.verEquipo(bundle);
                     }

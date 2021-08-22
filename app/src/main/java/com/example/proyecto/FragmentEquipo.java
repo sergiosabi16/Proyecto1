@@ -33,7 +33,7 @@ import java.util.Map;
 
 public class FragmentEquipo extends Fragment {
 
-    String equipoVisualizado,propietarioEquipo,usuarioLogged;
+    String propietarioEquipo,usuarioLogged;
     Boolean equipoNuevo;
     String[] posiciones,ligas,UIDjugadores;
     TextView txtNombreEquipo,txtPropietarioEquipo,txtMediaLigas,jugadorTop,jugadorJungla,jugadorMid,jugadorBot,jugadorApoyo,jugadorSuplente;
@@ -57,7 +57,6 @@ public class FragmentEquipo extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() !=null){
             usuarioLogged = getArguments().getString("usuarioLogged");
-            equipoVisualizado = getArguments().getString("equipoVisualizado");
             propietarioEquipo = getArguments().getString("propietarioEquipo");
             equipoNuevo = getArguments().getBoolean("equipoNuevo");
         }
@@ -257,7 +256,7 @@ public class FragmentEquipo extends Fragment {
                         AlertDialog dialog1 = builder.create();
                         dialog1.show();
                     }else {
-                        Mensaje msn = new Mensaje(getContext(), propietarioEquipo, usuarioLogged, 0, posicion);
+                        Mensaje msn = new Mensaje(getContext(), propietarioEquipo, main.getUsuarioLogged(), 0, posicion);
                         msn.enviarMensaje();
                     }
 
@@ -271,30 +270,49 @@ public class FragmentEquipo extends Fragment {
                     main.verJugador(bundle);
 
                 }else if(id==R.id.asignarme){
-                    int posicion=getPosicion(v);
-                    Boolean bucle=true,seSustituyeJugador=false;
-                    String jugadorEliminado="";
-                    Map<String, Object> equipo = new HashMap<>();
-                    Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).get();
-                    do {
-                        if (task.isSuccessful()) {
-                            bucle=false;
-                            if(task.getResult().getData()!=null);
-                            equipo=task.getResult().getData();
-                            if(equipo.get(posiciones[posicion])!=null){
-                                jugadorEliminado =task.getResult().get(posiciones[posicion]).toString();
-                            }
-                            if(jugadorEliminado.length()!=0){
-                                seSustituyeJugador=true;
-                            }
+                    Boolean jugadorRepetido=false;
+                    for(int i=0;i<UIDjugadores.length;i++){
+                        if(usuarioLogged==UIDjugadores[i]){
+                            jugadorRepetido=true;
                         }
-                    } while (bucle);
-                    equipo.put(posiciones[posicion],usuarioLogged);
-                    FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
-                    if(seSustituyeJugador) {
-                        MensajeJugadorEliminado(jugadorEliminado, usuarioLogged);
                     }
-                    cargarEquipo();
+                    if(jugadorRepetido){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                        builder.setTitle("Ya tienes una posición asignada en este equipo").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dialog1 = builder.create();
+                        dialog1.show();
+                    }else{
+                        int posicion = getPosicion(v);
+                        Boolean bucle = true, seSustituyeJugador = false;
+                        String jugadorEliminado = "";
+                        Map<String, Object> equipo = new HashMap<>();
+                        Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).get();
+                        do {
+                            if (task.isSuccessful()) {
+                                bucle = false;
+                                if (task.getResult().getData() != null) ;
+                                equipo = task.getResult().getData();
+                                if (equipo.get(posiciones[posicion]) != null) {
+                                    jugadorEliminado = task.getResult().get(posiciones[posicion]).toString();
+                                }
+                                if (jugadorEliminado.length() != 0) {
+                                    seSustituyeJugador = true;
+                                }
+                            }
+                        } while (bucle);
+                        equipo.put(posiciones[posicion], usuarioLogged);
+                        FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
+                        if (seSustituyeJugador) {
+                            MensajeJugadorEliminado(jugadorEliminado, usuarioLogged);
+                        }
+
+                        cargarEquipo();
+                    }
                 }else if(id==R.id.eliminarJugador){
                     int posicion=getPosicion(v);
                     Boolean bucle=true;
@@ -360,7 +378,7 @@ public class FragmentEquipo extends Fragment {
        Boolean bucle=true;
        String jugadores[]=new String[6];
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference document = db.collection("equipos").document(equipoVisualizado);
+        DocumentReference document = db.collection("equipos").document(propietarioEquipo);
         Task<DocumentSnapshot> task=document.get();
         do {
             if(task.isSuccessful()) {
