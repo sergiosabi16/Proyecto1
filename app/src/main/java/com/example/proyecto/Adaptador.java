@@ -14,6 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptador>{
@@ -82,7 +86,6 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             }else if(tipo==1){
                 nombreUsuarioLista = itemView.findViewById(R.id.nombreEquipoLista);
                 ligaUsuarioLista = itemView.findViewById(R.id.ligaEquipoLista);
-                posicionUsuarioLista = itemView.findViewById(R.id.propietarioEquipoLista);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -127,7 +130,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
         }
         public void asignarDatosEquipo(String [] equipo){
             nombreUsuarioLista.setText(equipo[0]);
-            ligaUsuarioLista.setText(equipo[1]);
+            ligaUsuarioLista.setText("Propietario: "+nombreJugador(equipo[1]));
             UID=equipo[1];
         }
 
@@ -187,5 +190,18 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             });
             popup.show();
         }
+        public String nombreJugador(String UID){
+            Boolean bucle = true;
+            Task<DocumentSnapshot> task;
+            task = FirebaseFirestore.getInstance().collection("usuarios").document(UID).get();
+            do{
+                if(task.isSuccessful()){
+                    bucle=false;
+                    return task.getResult().get("nombreInvocador").toString();
+                }
+            }while(bucle);
+            return "error al encontrar propietario";
+        };
     }
+
 }

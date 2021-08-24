@@ -35,7 +35,7 @@ public class FragmentEquipo extends Fragment {
 
     String propietarioEquipo,usuarioLogged;
     Boolean equipoNuevo;
-    String[] posiciones,ligas,UIDjugadores;
+    String[] posiciones,ligas,UIDjugadores=new String[6];
     TextView txtNombreEquipo,txtPropietarioEquipo,txtMediaLigas,jugadorTop,jugadorJungla,jugadorMid,jugadorBot,jugadorApoyo,jugadorSuplente;
     ImageButton btnNombreEquipo;
     ActivityPrincipal main;
@@ -377,10 +377,10 @@ public class FragmentEquipo extends Fragment {
     public void cargarEquipo(){
        Boolean bucle=true;
        String jugadores[]=new String[6];
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference document = db.collection("equipos").document(propietarioEquipo);
-        Task<DocumentSnapshot> task=document.get();
-        do {
+       FirebaseFirestore db = FirebaseFirestore.getInstance();
+       DocumentReference document = db.collection("equipos").document(propietarioEquipo);
+       Task<DocumentSnapshot> task=document.get();
+       do {
             if(task.isSuccessful()) {
                 bucle=false;
                 DocumentSnapshot ds = task.getResult();
@@ -389,6 +389,7 @@ public class FragmentEquipo extends Fragment {
                     for (int i = 0; i < posiciones.length; i++) {
                         if (ds.get(posiciones[i]) != null) {
                             Boolean aux = true;
+                            UIDjugadores[i] = ds.get(posiciones[i]).toString();
                             Task<DocumentSnapshot> jugador = FirebaseFirestore.getInstance().collection("usuarios")
                                     .document(ds.get(posiciones[i]).toString()).get();
                             do {
@@ -399,24 +400,53 @@ public class FragmentEquipo extends Fragment {
                             } while (aux);
 
                         } else {
+                            UIDjugadores[i]="";
                             jugadores[i] = "No existe ningún jugador en esta posición";
                         }
                     }
-                    UIDjugadores=jugadores;
                 }else{
                     for(int i=0;i<jugadores.length;i++){
                         jugadores[i] = "No existe ningún jugador en esta posición";
                     };
-                    UIDjugadores=jugadores;
                 }
             }
-        }while(bucle);
-        jugadorTop.setText(jugadores[0]);
-        jugadorJungla.setText(jugadores[1]);
-        jugadorMid.setText(jugadores[2]);
-        jugadorBot.setText(jugadores[3]);
-        jugadorApoyo.setText(jugadores[4]);
-        jugadorSuplente.setText(jugadores[5]);
+       }while(bucle);
+       jugadorTop.setText(jugadores[0]);
+       jugadorJungla.setText(jugadores[1]);
+       jugadorMid.setText(jugadores[2]);
+       jugadorBot.setText(jugadores[3]);
+       jugadorApoyo.setText(jugadores[4]);
+       jugadorSuplente.setText(jugadores[5]);
+       txtMediaLigas.setText(calcularLiga());
     }
+    public String calcularLiga(){
+        int numJugadores=0,puntuacionTotal=0,resultado;
+        for(int i=0;i<UIDjugadores.length;i++){
+            if(UIDjugadores[i].length()!=0){
+                numJugadores++;
+                Boolean bucle=true;
+                Task<DocumentSnapshot> task= FirebaseFirestore.getInstance().collection("usuarios").document(UIDjugadores[i]).get();
+                do{
+                    if(task.isSuccessful()){
+                        bucle=false;
+                        String liga=task.getResult().get("liga").toString();
+                        for(int j=0;j<ligas.length;j++){
+                            if(liga.equals(ligas[j])){
+                                puntuacionTotal+=j;
+                                j= ligas.length;
+                            }
+                        }
+                    }
+                }while(bucle);
+            }
+        }
+        if(numJugadores!=0){
+            resultado=puntuacionTotal/numJugadores;
+            return ligas[resultado];
+        }else{
+            return "No hay jugadores para analizar nivel";
+        }
+
+    };
 
 }
