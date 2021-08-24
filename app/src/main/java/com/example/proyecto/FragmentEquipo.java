@@ -133,14 +133,6 @@ public class FragmentEquipo extends Fragment {
                     menu(jugadorSuplente,5);
                 }
             });
-
-            if(txtNombreEquipo.getText().length()==0){
-                txtNombreEquipo.setText("Escribe nombre de equipo");
-                equipoNuevo=true;
-            }else{
-                equipoNuevo=false;
-            }
-
             if(usuarioLogged==propietarioEquipo) {
                 miEquipo();
             }
@@ -152,13 +144,6 @@ public class FragmentEquipo extends Fragment {
         super.onStart();
         if (getArguments() != null) {
 
-            if(equipoNuevo){
-
-               // guardarEquipo();
-                DialogFragment dialog = new DialogBienvenida();
-                dialog.show(getFragmentManager(),"bienvenida");
-            }
-            //Toast.makeText(getActivity(), usuarioVisualizado, Toast.LENGTH_LONG).show();
         }
     }
     public void guardarEquipo(){
@@ -179,10 +164,16 @@ public class FragmentEquipo extends Fragment {
         equipo.put("propietarioEquipo",usuarioLogged);
 
         db.collection("equipos").document(usuarioLogged).set(equipo);
+        equipoNuevo = false;
     }
     private void miEquipo() {
-
+        if(equipoNuevo){
+            DialogFragment dialog = new DialogBienvenida();
+            dialog.show(getFragmentManager(),"bienvenida");
+            txtNombreEquipo.setText("Nombre del equipo");
+        }
         btnNombreEquipo.setVisibility(View.VISIBLE);
+        txtPropietarioEquipo.setText("Usted es el propietario de este equipo");
         btnNombreEquipo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,18 +252,30 @@ public class FragmentEquipo extends Fragment {
                     }
 
                 }else if(id==R.id.verJugador){
-                    Bundle bundle=new Bundle();
+                    if(UIDjugadores[posicion].length()==0){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                        builder.setTitle("No existe ningun jugador en esta posición").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                    bundle.putString("usuarioVisualizado",UIDjugadores[posicion]);
-                    bundle.putString("usuarioLogged",usuarioLogged);
-                    bundle.putBoolean("usuarioNuevo",false);
+                            }
+                        });
+                        AlertDialog dialog1 = builder.create();
+                        dialog1.show();
+                    }else {
+                        Bundle bundle = new Bundle();
 
-                    main.verJugador(bundle);
+                        bundle.putString("usuarioVisualizado", UIDjugadores[posicion]);
+                        bundle.putString("usuarioLogged", usuarioLogged);
+                        bundle.putBoolean("usuarioNuevo", false);
 
+                        main.verJugador(bundle);
+
+                    }
                 }else if(id==R.id.asignarme){
                     Boolean jugadorRepetido=false;
                     for(int i=0;i<UIDjugadores.length;i++){
-                        if(usuarioLogged==UIDjugadores[i]){
+                        if(usuarioLogged.equals(UIDjugadores[i])){
                             jugadorRepetido=true;
                         }
                     }
@@ -295,8 +298,9 @@ public class FragmentEquipo extends Fragment {
                         do {
                             if (task.isSuccessful()) {
                                 bucle = false;
-                                if (task.getResult().getData() != null) ;
-                                equipo = task.getResult().getData();
+                                if (task.getResult().getData() != null) {
+                                    equipo = task.getResult().getData();
+                                }
                                 if (equipo.get(posiciones[posicion]) != null) {
                                     jugadorEliminado = task.getResult().get(posiciones[posicion]).toString();
                                 }
@@ -305,13 +309,25 @@ public class FragmentEquipo extends Fragment {
                                 }
                             }
                         } while (bucle);
-                        equipo.put(posiciones[posicion], usuarioLogged);
-                        FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
-                        if (seSustituyeJugador) {
-                            MensajeJugadorEliminado(jugadorEliminado, usuarioLogged);
-                        }
+                        if(!equipo.isEmpty()) {
+                            equipo.put(posiciones[posicion], usuarioLogged);
+                            FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
+                            if (seSustituyeJugador) {
+                                MensajeJugadorEliminado(jugadorEliminado, usuarioLogged);
+                            }
 
-                        cargarEquipo();
+                            cargarEquipo();
+                        }else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                            builder.setTitle("Antes de nada asigna un nombre al equipo para guardarlo").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            AlertDialog dialog1 = builder.create();
+                            dialog1.show();
+                        }
                     }
                 }else if(id==R.id.eliminarJugador){
                     int posicion=getPosicion(v);
@@ -353,6 +369,10 @@ public class FragmentEquipo extends Fragment {
                 }
             }
         });
+        if(UIDjugadores[posicion].length()==0) {
+            popup.getMenu().findItem(R.id.eliminarJugador).setVisible(false);
+            popup.getMenu().findItem(R.id.verJugador).setVisible(false);
+        }
         popup.show();
     }
     public Boolean nombreDisponible(String nombre){
@@ -365,7 +385,7 @@ public class FragmentEquipo extends Fragment {
             if (task.isSuccessful()) {
                 bucle = false;
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    if (nombre.equals(document.get("nombreEquipo"))) {
+                    if (nombre.equals(document.get("nombreEquipo").toString())) {
                         return false;
                     }
                 }
@@ -405,11 +425,22 @@ public class FragmentEquipo extends Fragment {
                         }
                     }
                 }else{
+                    equipoNuevo=true;
                     for(int i=0;i<jugadores.length;i++){
+                        UIDjugadores[i]="";
                         jugadores[i] = "No existe ningún jugador en esta posición";
                     };
                 }
             }
+       }while(bucle);
+
+       bucle=true;
+       Task<DocumentSnapshot> task1 = FirebaseFirestore.getInstance().collection("usuarios").document(propietarioEquipo).get();
+       do{
+           if(task1.isSuccessful()){
+               bucle=false;
+               txtPropietarioEquipo.setText(task1.getResult().get("nombreInvocador").toString());
+           }
        }while(bucle);
        jugadorTop.setText(jugadores[0]);
        jugadorJungla.setText(jugadores[1]);
@@ -448,5 +479,4 @@ public class FragmentEquipo extends Fragment {
         }
 
     };
-
 }

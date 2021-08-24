@@ -106,7 +106,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
             Bundle bundle = new Bundle();
             bundle.putString("usuarioLogged", usuarioLogged);
-            bundle.putString("equipoVisualizado", usuarioLogged);
             bundle.putString("propietarioEquipo", usuarioLogged);
             bundle.putBoolean("equipoNuevo", !propietarioEquipo);
 
