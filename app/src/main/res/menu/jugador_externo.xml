@@ -11,5 +11,9 @@
     <item
         android:id="@+id/invitarJugador"
         android:title="Invitar a mi equipo" />
+    <item
+        android:id="@+id/abandonarEquipo"
+        android:title="Abandonar equipo"
+        android:visible="false"/>
 
 </menu>

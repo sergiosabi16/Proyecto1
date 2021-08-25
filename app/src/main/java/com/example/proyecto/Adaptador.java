@@ -20,13 +20,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptador>{
+public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptador> {
 
     ArrayList<String[]> lista;
     int tipo; //tipo 0 jugadores, tipo 1 equipos, tipo 2 mensajes
     ActivityPrincipal main;
 
-    public Adaptador(int tipo,ArrayList<String[]> lista,ActivityPrincipal main) {
+    public Adaptador(int tipo, ArrayList<String[]> lista, ActivityPrincipal main) {
         this.tipo = tipo;
         this.lista = lista;
         this.main = main;
@@ -36,11 +36,11 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
     @Override
     public ViewHolderAdaptador onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if(tipo==0) {
+        if (tipo == 0) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_perfil, null, false);
-        }else if(tipo==1) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_equipo,null,false);
-        }else{
+        } else if (tipo == 1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_equipo, null, false);
+        } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mensaje, null, false);
         }
 
@@ -50,12 +50,11 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
     @Override
     public void onBindViewHolder(@NonNull Adaptador.ViewHolderAdaptador holder, int position) {
 
-        if(tipo==0) {
+        if (tipo == 0) {
             holder.asignarDatos(lista.get(position));
-        }else if(tipo==1){
+        } else if (tipo == 1) {
             holder.asignarDatosEquipo(lista.get(position));
-        }
-        else{
+        } else {
             holder.asignarDatosMensaje(lista.get(position));
         }
     }
@@ -69,11 +68,11 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
 
         Mensaje mensaje;
         String UID;
-        TextView nombreUsuarioLista,ligaUsuarioLista,posicionUsuarioLista;
+        TextView nombreUsuarioLista, ligaUsuarioLista, posicionUsuarioLista;
 
         public ViewHolderAdaptador(@NonNull View itemView) {
             super(itemView);
-            if(tipo==0) {
+            if (tipo == 0) {
                 nombreUsuarioLista = itemView.findViewById(R.id.nombreUsuarioLista);
                 ligaUsuarioLista = itemView.findViewById(R.id.ligaUsuarioLista);
                 posicionUsuarioLista = itemView.findViewById(R.id.posicionUsuarioLista);
@@ -83,7 +82,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                         menuJugador(itemView);
                     }
                 });
-            }else if(tipo==1){
+            } else if (tipo == 1) {
                 nombreUsuarioLista = itemView.findViewById(R.id.nombreEquipoLista);
                 ligaUsuarioLista = itemView.findViewById(R.id.ligaEquipoLista);
                 itemView.setOnClickListener(new View.OnClickListener() {
@@ -96,8 +95,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                         main.verEquipo(bundle);
                     }
                 });
-            }
-            else{
+            } else {
                 nombreUsuarioLista = itemView.findViewById(R.id.textoMsg);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -106,32 +104,36 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                         builder.setTitle("¿Aceptas?").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mensaje.cambiarJugador();
+                                if (mensaje.getTipo() == 1 || mensaje.getTipo() == 0) {
+                                    mensaje.cambiarJugador();
+                                }
                                 mensaje.eliminarMensaje();
                                 itemView.setVisibility(View.GONE);
                             }
                         });
-                        if(mensaje.getTipo()==1||mensaje.getTipo()==0)
-                        builder.setNegativeButton("Rechazar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mensaje.eliminarMensaje();
-                            }
-                        });
+                        if (mensaje.getTipo() == 1 || mensaje.getTipo() == 0)
+                            builder.setNegativeButton("Rechazar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mensaje.eliminarMensaje();
+                                }
+                            });
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     }
                 });
             }
         }
-        public void asignarDatosMensaje(String [] msn){
-            mensaje= new Mensaje(itemView.getContext(),msn[0],msn[1],Integer.parseInt(msn[2]),Integer.parseInt(msn[3]));
+
+        public void asignarDatosMensaje(String[] msn) {
+            mensaje = new Mensaje(itemView.getContext(), msn[0], msn[1], Integer.parseInt(msn[2]), Integer.parseInt(msn[3]));
             nombreUsuarioLista.setText(mensaje.montarMensaje());
         }
-        public void asignarDatosEquipo(String [] equipo){
+
+        public void asignarDatosEquipo(String[] equipo) {
             nombreUsuarioLista.setText(equipo[0]);
-            ligaUsuarioLista.setText("Propietario: "+nombreJugador(equipo[1]));
-            UID=equipo[1];
+            ligaUsuarioLista.setText("Propietario: " + nombreJugador(equipo[1]));
+            UID = equipo[1];
         }
 
         public void asignarDatos(String[] usuario) {
@@ -141,70 +143,74 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
             UID = usuario[0];
 
         }
+
         public void menuJugador(View v) {
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.jugador_externo, popup.getMenu());
-            MenuItem item= popup.getMenu().findItem(R.id.invitarJugador);
-            MenuItem item1= popup.getMenu().findItem(R.id.solicitarUnirme);
+            inflater.inflate(R.menu.jugador_externo, popup.getMenu());
+            MenuItem item = popup.getMenu().findItem(R.id.invitarJugador);
+            MenuItem item1 = popup.getMenu().findItem(R.id.solicitarUnirme);
             item1.setVisible(false);
-            if(!main.getPropietarioEquipo())
+            if (!main.getPropietarioEquipo())
                 item.setVisible(false);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                        int id= item.getItemId();
-                        if(id==R.id.verJugador){
-                            Bundle bundle= new Bundle();
-                            bundle.putString("usuarioVisualizado", UID);
-                            bundle.putBoolean("usuarioNuevo", false);
+                    int id = item.getItemId();
+                    if (id == R.id.verJugador) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("usuarioVisualizado", UID);
+                        bundle.putBoolean("usuarioNuevo", false);
 
-                            main.verJugador(bundle);
-                        }else if(id==R.id.invitarJugador){
+                        main.verJugador(bundle);
+                    } else if (id == R.id.invitarJugador) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(main);
-                            builder.setTitle(R.string.titulo).setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Mensaje msn=new Mensaje(main.getApplicationContext(),UID,main.getUsuarioLogged(),1,which);
-                                    if(msn.comprobarMensajeEnviado()){
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(main);
-                                        builder.setTitle("Ya has invitado a este jugador").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                        builder.setTitle(R.string.titulo).setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Mensaje msn = new Mensaje(main.getApplicationContext(), UID, main.getUsuarioLogged(), 1, which);
+                                if (msn.comprobarMensajeEnviado()) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                                    builder.setTitle("Ya has invitado a este jugador").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                            }
-                                        });
-                                        AlertDialog dialog1 = builder.create();
-                                        dialog1.show();
-                                    }else{
-                                        msn.enviarMensaje();
-                                    }
+                                        }
+                                    });
+                                    AlertDialog dialog1 = builder.create();
+                                    dialog1.show();
+                                } else {
+                                    msn.enviarMensaje();
                                 }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
                     return false;
                 }
             });
-            if(main.getUsuarioLogged().equals(UID)) {
+            if (main.getUsuarioLogged().equals(UID)) {
                 popup.getMenu().findItem(R.id.invitarJugador).setVisible(false);
             }
             popup.show();
         }
-        public String nombreJugador(String UID){
+
+        public String nombreJugador(String UID) {
             Boolean bucle = true;
             Task<DocumentSnapshot> task;
             task = FirebaseFirestore.getInstance().collection("usuarios").document(UID).get();
-            do{
-                if(task.isSuccessful()){
-                    bucle=false;
+            do {
+                if (task.isSuccessful()) {
+                    bucle = false;
                     return task.getResult().get("nombreInvocador").toString();
                 }
-            }while(bucle);
+            } while (bucle);
             return "error al encontrar propietario";
-        };
+        }
+
+        ;
     }
 
 }

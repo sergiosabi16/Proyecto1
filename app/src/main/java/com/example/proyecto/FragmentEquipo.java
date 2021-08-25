@@ -361,6 +361,23 @@ public class FragmentEquipo extends Fragment {
                     FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
                     MensajeJugadorEliminado(jugadorEliminado,usuarioLogged);
                     cargarEquipo();
+                }else if(id==R.id.abandonarEquipo){
+                    int posicion=getPosicion(v);
+                    Boolean bucle=true;
+                    String jugadorEliminado="";
+                    Map<String, Object> equipo = new HashMap<>();
+                    Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).get();
+                    do {
+                        if (task.isSuccessful()) {
+                            bucle=false;
+                            if(task.getResult().getData()!=null);
+                            equipo=task.getResult().getData();
+                            equipo.remove(posiciones[posicion]);
+                        }
+                    } while (bucle);
+                    FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).set(equipo);
+                    //MensajeJugadorEliminado(jugadorEliminado,usuarioLogged);
+                    cargarEquipo();
                 }
                 return false;
             }
@@ -381,6 +398,9 @@ public class FragmentEquipo extends Fragment {
                 }
             }
         });
+        if(UIDjugadores[posicion].equals(main.getUsuarioLogged())&& !main.getUsuarioLogged().equals(propietarioEquipo)){
+            popup.getMenu().findItem(R.id.abandonarEquipo).setVisible(true);
+        }
         if(UIDjugadores[posicion].length()==0) {
             if(main.getUsuarioLogged().equals(propietarioEquipo)) {
                 popup.getMenu().findItem(R.id.eliminarJugador).setVisible(false);
