@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/posicionUsuarioLista"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/nombreUsuarioLista"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,6 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/ligaUsuarioLista"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

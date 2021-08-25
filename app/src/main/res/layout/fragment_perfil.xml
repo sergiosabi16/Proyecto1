@@ -11,6 +11,7 @@
     >
 
     <TextView
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/lblNombreInvocador"
         android:layout_width="218dp"
         android:layout_height="35dp"
@@ -22,6 +23,7 @@
         tools:text="Nombre de invocador" />
 
     <ImageButton
+        android:background="@drawable/ic_baseline_create_24"
         android:id="@+id/btnEditarNombre"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -32,6 +34,7 @@
         app:layout_constraintTop_toTopOf="@+id/lblNombreInvocador" />
 
     <TextView
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/lblPosicion"
         android:layout_width="163dp"
         android:layout_height="35dp"
@@ -43,6 +46,7 @@
         tools:text="Posición" />
 
     <TextView
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/lblLiga"
         android:layout_width="123dp"
         android:layout_height="35dp"
@@ -54,6 +58,7 @@
         tools:text="Liga" />
 
     <ImageButton
+        android:background="@drawable/ic_baseline_create_24"
         android:id="@+id/btnEditarLiga"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -64,6 +69,8 @@
         app:layout_constraintTop_toTopOf="@+id/lblLiga" />
 
     <ImageButton
+        android:background="@drawable/ic_baseline_create_24"
+
         android:id="@+id/btnEditarPosicion"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -74,6 +81,9 @@
         app:layout_constraintTop_toTopOf="@+id/lblPosicion" />
 
     <TextView
+        android:hint="Escribe una desccripción de tu forma de jugar o los personajes que sueles manejar"
+        android:textColorHint="#fad7a0"
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/lblDescripcion"
         android:layout_width="339dp"
         android:layout_height="159dp"
@@ -85,6 +95,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lblLiga" />
 
     <EditText
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/txtDescripcion"
         android:layout_width="339dp"
         android:layout_height="159dp"
