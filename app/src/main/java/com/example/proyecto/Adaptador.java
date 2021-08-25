@@ -188,6 +188,9 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                     return false;
                 }
             });
+            if(main.getUsuarioLogged().equals(UID)) {
+                popup.getMenu().findItem(R.id.invitarJugador).setVisible(false);
+            }
             popup.show();
         }
         public String nombreJugador(String UID){

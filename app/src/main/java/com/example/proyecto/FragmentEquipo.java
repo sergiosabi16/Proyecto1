@@ -248,7 +248,19 @@ public class FragmentEquipo extends Fragment {
                         dialog1.show();
                     }else {
                         Mensaje msn = new Mensaje(getContext(), propietarioEquipo, main.getUsuarioLogged(), 0, posicion);
-                        msn.enviarMensaje();
+                        if(msn.comprobarMensajeEnviado()){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                            builder.setTitle("Ya has solicitado unirte a este equipo").setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            AlertDialog dialog1 = builder.create();
+                            dialog1.show();
+                        }else{
+                            msn.enviarMensaje();
+                        }
                     }
 
                 }else if(id==R.id.verJugador){
@@ -370,7 +382,11 @@ public class FragmentEquipo extends Fragment {
             }
         });
         if(UIDjugadores[posicion].length()==0) {
-            popup.getMenu().findItem(R.id.eliminarJugador).setVisible(false);
+            if(main.getUsuarioLogged().equals(propietarioEquipo)) {
+                popup.getMenu().findItem(R.id.eliminarJugador).setVisible(false);
+            }else{
+                popup.getMenu().findItem(R.id.invitarJugador).setVisible(false);
+            }
             popup.getMenu().findItem(R.id.verJugador).setVisible(false);
         }
         popup.show();
