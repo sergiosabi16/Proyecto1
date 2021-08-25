@@ -224,7 +224,6 @@ import com.google.firebase.firestore.QuerySnapshot;
         }
 
      }
-
      public void setUsuarioNuevo(boolean b) {
         usuarioNuevo=b;
      }
