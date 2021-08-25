@@ -127,7 +127,7 @@ public class Mensaje {
                     if (task.isSuccessful()) {
                         bucle = false;
                         DocumentSnapshot doc = task.getResult();
-                        nombreJugador = doc.get("nombreEquipo").toString();
+                        nombreJugador = doc.get("nombreInvocador").toString();
                     }
                 } while (bucle);
                 msn = "Enhorabuena'" + nombreJugador + "' ha aceptado tu invitación";

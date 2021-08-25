@@ -55,7 +55,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
         FragmentPerfil fragment = FragmentPerfil.newInstance(bundle);
 
-        fragmentManager.beginTransaction().replace(R.id.pantalla,fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.pantalla,fragment).addToBackStack(null).commit();
 
         Task<DocumentSnapshot> task=FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).get();
         Boolean bucle=true;
@@ -88,7 +88,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
             FragmentBusqueda fragment = FragmentBusqueda.newInstance(bundle);
 
-            fragmentManager.beginTransaction().replace(R.id.pantalla, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.pantalla, fragment).addToBackStack(null).commit();
 
         }else if(id == R.id.miPerfil){
 
@@ -100,7 +100,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
             FragmentPerfil fragment = FragmentPerfil.newInstance(bundle);
 
-            fragmentManager.beginTransaction().replace(R.id.pantalla,fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.pantalla,fragment).addToBackStack(null).commit();
 
         }else if (id == R.id.miEquipo) {
 
@@ -111,7 +111,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
             FragmentEquipo fragmentEquipo = FragmentEquipo.newInstance(bundle);
 
-            fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentEquipo).commit();
+            fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentEquipo).addToBackStack(null).commit();
 
         }else if(id == R.id.mensajes){
 
@@ -120,7 +120,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
             FragmentMensajes fragmentMensajes = FragmentMensajes.newInstance(bundle);
 
-            fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentMensajes).commit();
+            fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentMensajes).addToBackStack(null).commit();
             //notificaion=false;
         }else if(id == R.id.buscarEquipos){
 
@@ -132,7 +132,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
             FragmentBusqueda fragment = FragmentBusqueda.newInstance(bundle);
 
-            fragmentManager.beginTransaction().replace(R.id.pantalla, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.pantalla, fragment).addToBackStack(null).commit();
 
 
         }else if(id == R.id.cerrarSesion){
@@ -205,7 +205,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
     public void verJugador(Bundle bundle) {
         FragmentPerfil fragmentEquipo = FragmentPerfil.newInstance(bundle);
-        fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentEquipo).commit();
+        fragmentManager.beginTransaction().replace(R.id.pantalla, fragmentEquipo).addToBackStack(null).commit();
     }
     public void verEquipo(Bundle bundle){
         FragmentEquipo fragmentEquipo = FragmentEquipo.newInstance(bundle);
@@ -214,5 +214,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
      public Boolean getPropietarioEquipo() {
          return propietarioEquipo;
+     }
+
+     @Override
+     public void onBackPressed() {
+
+        if(!fragmentManager.popBackStackImmediate()){
+            super.onBackPressed();
+        }
+
+     }
+
+     public void setUsuarioNuevo(boolean b) {
+        usuarioNuevo=b;
      }
  }

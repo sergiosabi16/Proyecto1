@@ -250,6 +250,9 @@ public class FragmentPerfil extends Fragment {
         user.put("descripcion",txtDescripcion.getText().toString());
 
         db.collection("usuarios").document(usuarioLogged).set(user);
+        usuarioNuevo=false;
+        ActivityPrincipal main = (ActivityPrincipal) getActivity();
+        main.setUsuarioNuevo(false);
     }
 
 }

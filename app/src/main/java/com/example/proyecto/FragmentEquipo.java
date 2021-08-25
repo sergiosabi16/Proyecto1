@@ -438,6 +438,7 @@ public class FragmentEquipo extends Fragment {
        Task<DocumentSnapshot> task=document.get();
        do {
             if(task.isSuccessful()) {
+                equipoNuevo=false;
                 bucle=false;
                 DocumentSnapshot ds = task.getResult();
                 if(ds.getData()!=null) {

@@ -45,7 +45,6 @@ public class ActivityRegistro extends AppCompatActivity {
                     if(txtPassword.getText().toString().length()<6){
                         Toast toast1 = Toast.makeText(getApplication(), "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT);
                         toast1.show();
-
                     }
 
                     mAuth.createUserWithEmailAndPassword(txtCorreo.getText().toString(), txtPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -54,6 +53,8 @@ public class ActivityRegistro extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast toast1 = Toast.makeText(getApplication(), "La cuenta se ha creado con éxito", Toast.LENGTH_SHORT);
                                 toast1.show();
+                                Intent i= new Intent(v.getContext(), MainActivity.class);
+                                startActivity(i);
                             } else {
                                 Toast toast1 = Toast.makeText(getApplication(), "Esta cuenta no se pudo registrar", Toast.LENGTH_SHORT);
                                 toast1.show();
