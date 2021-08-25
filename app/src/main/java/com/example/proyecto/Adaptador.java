@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -182,6 +183,8 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                                     dialog1.show();
                                 } else {
                                     msn.enviarMensaje();
+                                    Toast toast1 = Toast.makeText(main, "Invitación enviada", Toast.LENGTH_SHORT);
+                                    toast1.show();
                                 }
                             }
                         });

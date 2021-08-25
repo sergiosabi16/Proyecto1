@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -260,6 +261,8 @@ public class FragmentEquipo extends Fragment {
                             dialog1.show();
                         }else{
                             msn.enviarMensaje();
+                            Toast toast1 = Toast.makeText(main, "Solicitud enviada", Toast.LENGTH_SHORT);
+                            toast1.show();
                         }
                     }
 
