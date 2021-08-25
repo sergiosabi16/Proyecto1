@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".FragmentPerfil"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="61dp">
+    tools:layout_editor_absoluteY="61dp"
+    android:background="@drawable/fondo"
+    >
 
     <TextView
         android:id="@+id/lblNombreInvocador"

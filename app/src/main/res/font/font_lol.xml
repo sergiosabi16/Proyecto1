@@ -3,9 +3,7 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
+        android:font="@font/frizquadrataregular"
         />
-    <font
-        android:fontStyle="italic"
-        android:fontWeight="400"
-        />
+
 </font-family>

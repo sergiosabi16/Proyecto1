@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ActivityRegistro"
     tools:layout_editor_absoluteX="-13dp"
-    tools:layout_editor_absoluteY="-1dp">
+    tools:layout_editor_absoluteY="-1dp"
+    android:background="@drawable/fondo">
 
     <EditText
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/txtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/lblPassword"
+        android:textColor="@android:color/holo_orange_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -52,6 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnAceptar" />
 
     <TextView
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/lblCorreo"
         android:layout_width="133dp"
         android:layout_height="0dp"
@@ -65,6 +68,7 @@
         app:layout_constraintTop_toTopOf="@+id/txtCorreo" />
 
     <EditText
+        android:textColor="@android:color/holo_orange_light"
         android:id="@+id/txtCorreo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

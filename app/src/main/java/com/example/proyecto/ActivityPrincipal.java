@@ -55,7 +55,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
         FragmentPerfil fragment = FragmentPerfil.newInstance(bundle);
 
-        fragmentManager.beginTransaction().replace(R.id.pantalla,fragment).addToBackStack(null).commit();
+        fragmentManager.beginTransaction().replace(R.id.pantalla,fragment).commit();
 
         Task<DocumentSnapshot> task=FirebaseFirestore.getInstance().collection("equipos").document(usuarioLogged).get();
         Boolean bucle=true;
