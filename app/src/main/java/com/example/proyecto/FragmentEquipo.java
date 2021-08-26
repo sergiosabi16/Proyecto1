@@ -169,8 +169,16 @@ public class FragmentEquipo extends Fragment {
     }
     private void miEquipo() {
         if(equipoNuevo){
-            DialogFragment dialog = new DialogBienvenida();
-            dialog.show(getFragmentManager(),"bienvenida");
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Bienvenido a tu equipo")
+                    .setMessage("Aquí puedes crear tu equipo, ponerle un nombre e invitar jugadores en la sección 'buscar jugadores'. La liga del club se calculará en base a la liga de los distintos jugadores")
+                    .setPositiveButton(R.string.aceptar, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
             txtNombreEquipo.setText("Nombre del equipo");
         }
         btnNombreEquipo.setVisibility(View.VISIBLE);
@@ -180,7 +188,7 @@ public class FragmentEquipo extends Fragment {
             public void onClick(View v) {
                 final EditText txtDialog = new EditText(getActivity());
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.titulo).setView(txtDialog)
+                builder.setTitle("Escribe un nombre para tu equipo").setView(txtDialog)
                         .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

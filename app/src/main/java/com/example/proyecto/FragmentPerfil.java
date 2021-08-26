@@ -172,7 +172,7 @@ public class FragmentPerfil extends Fragment {
             public void onClick(View v) {
                 final EditText txtDialog = new EditText(getActivity());
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.titulo).setView(txtDialog)
+                builder.setTitle("Escribe tu nombre de invocador:").setView(txtDialog)
                         .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -209,7 +209,7 @@ public class FragmentPerfil extends Fragment {
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.titulo).setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
+                builder.setTitle("Elige tu posición:").setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         posicionUsuario.setText(posiciones[which]);
@@ -225,7 +225,7 @@ public class FragmentPerfil extends Fragment {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.titulo).setItems(R.array.ligas, new DialogInterface.OnClickListener() {
+                builder.setTitle("Selecciona tu liga:").setItems(R.array.ligas, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ligaUsuario.setText(ligas[which]);
