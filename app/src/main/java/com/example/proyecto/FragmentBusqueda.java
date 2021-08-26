@@ -70,21 +70,20 @@ public class FragmentBusqueda extends Fragment {
 
             posiciones=getActivity().getResources().getStringArray(R.array.posiciones);
             ligas=getActivity().getResources().getStringArray(R.array.ligas);
-
             btnFiltro = view.findViewById(R.id.btnFiltro);
-            btnFiltro.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(tipo) {
-                        menuFiltroJugadores(btnFiltro);
-                    }else{
-
-                    }
-                }
-            });
 
             recycler= view.findViewById(R.id.recyclerView);
             recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+            if(tipo) {
+                btnFiltro.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        menuFiltroJugadores(btnFiltro);
+                    }
+                });
+            }else{
+                btnFiltro.setVisibility(View.GONE);
+            }
             Adaptador adaptador;
             if(tipo) {
                 lista = crearConsultaJugadores(0, "");
@@ -177,7 +176,6 @@ public class FragmentBusqueda extends Fragment {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }else if(id==R.id.filtroJugadorNombre){
-
                     final EditText txtDialog = new EditText(getActivity());
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle(R.string.titulo).setView(txtDialog)

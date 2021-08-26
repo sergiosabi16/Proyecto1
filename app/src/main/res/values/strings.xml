@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Proyecto</string>
+    <string name="app_name">Lolder</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="bienvenida">Esta aplicación esta diseñada para encontrar posibles compañeros de equipo en el videojuego League of Legends. Para facilitar su uso te recomendamos usar el mismo nombre de usuario que en el videojuego y rellenar tu perfil con los datos correctos. Disfruta!</string>
     <string name="titulo">Bienvenido a Lolder!</string>
