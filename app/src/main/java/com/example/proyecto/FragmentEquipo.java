@@ -469,14 +469,14 @@ public class FragmentEquipo extends Fragment {
 
                         } else {
                             UIDjugadores[i]="";
-                            jugadores[i] = "No existe ningún jugador en esta posición";
+                            jugadores[i] = "Posición vacía";
                         }
                     }
                 }else{
                     equipoNuevo=true;
                     for(int i=0;i<jugadores.length;i++){
                         UIDjugadores[i]="";
-                        jugadores[i] = "No existe ningún jugador en esta posición";
+                        jugadores[i] = "Posición vacía";
                     };
                 }
             }
