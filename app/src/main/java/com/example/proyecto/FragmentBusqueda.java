@@ -153,7 +153,7 @@ public class FragmentBusqueda extends Fragment {
 
                 if(id==R.id.filtroJugadorLiga){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.titulo).setItems(R.array.ligas, new DialogInterface.OnClickListener() {
+                    builder.setTitle("Selecciona una liga").setItems(R.array.ligas, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             lista= crearConsultaJugadores(1,ligas[which]);
@@ -165,7 +165,7 @@ public class FragmentBusqueda extends Fragment {
                     dialog.show();
                 }else if(id==R.id.filtroJugadorPosicion){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.titulo).setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
+                    builder.setTitle("Selecciona una posición").setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             lista= crearConsultaJugadores(2,posiciones[which]);
@@ -178,7 +178,7 @@ public class FragmentBusqueda extends Fragment {
                 }else if(id==R.id.filtroJugadorNombre){
                     final EditText txtDialog = new EditText(getActivity());
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.titulo).setView(txtDialog)
+                    builder.setTitle("Escribe el nombre del jugador").setView(txtDialog)
                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

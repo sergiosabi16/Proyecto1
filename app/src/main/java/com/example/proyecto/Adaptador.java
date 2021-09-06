@@ -167,7 +167,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolderAdaptado
                     } else if (id == R.id.invitarJugador) {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(main);
-                        builder.setTitle(R.string.titulo).setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
+                        builder.setItems(R.array.posiciones, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Mensaje msn = new Mensaje(main.getApplicationContext(), UID, main.getUsuarioLogged(), 1, which);
